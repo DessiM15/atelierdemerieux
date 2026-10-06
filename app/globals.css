@@ -643,27 +643,9 @@ html[data-nav="glass"] .hero {
 }
 
 /* --- hero tint ------------------------------------------------------------ */
+/* Default: natural — a neutral shadow, lighter in the middle so the yarn
+   colours read true. A soft text shadow carries the legibility. */
 .hero-tint-bottom {
-  background: linear-gradient(
-    to top,
-    color-mix(in srgb, var(--color-roast) 85%, transparent) 0%,
-    color-mix(in srgb, var(--color-roast) 35%, transparent) 50%,
-    color-mix(in srgb, var(--color-roast) 10%, transparent) 100%
-  );
-}
-.hero-tint-side {
-  background: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--color-roast) 60%, transparent) 0%,
-    color-mix(in srgb, var(--color-roast) 15%, transparent) 50%,
-    transparent 100%
-  );
-}
-
-/* Option: natural — a neutral shadow instead of a plum one, lighter in the
-   middle so the yarn colours read true. A soft text shadow carries the
-   legibility the gradient gave up. */
-html[data-tint="natural"] .hero-tint-bottom {
   background: linear-gradient(
     to top,
     rgba(22, 16, 12, 0.78) 0%,
@@ -671,7 +653,7 @@ html[data-tint="natural"] .hero-tint-bottom {
     rgba(22, 16, 12, 0.04) 100%
   );
 }
-html[data-tint="natural"] .hero-tint-side {
+.hero-tint-side {
   background: linear-gradient(
     to right,
     rgba(22, 16, 12, 0.45) 0%,
@@ -679,8 +661,29 @@ html[data-tint="natural"] .hero-tint-side {
     transparent 100%
   );
 }
-html[data-tint="natural"] .hero-copy {
+.hero-copy {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Option: plum wash. */
+html[data-tint="plum"] .hero-tint-bottom {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-roast) 85%, transparent) 0%,
+    color-mix(in srgb, var(--color-roast) 35%, transparent) 50%,
+    color-mix(in srgb, var(--color-roast) 10%, transparent) 100%
+  );
+}
+html[data-tint="plum"] .hero-tint-side {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-roast) 60%, transparent) 0%,
+    color-mix(in srgb, var(--color-roast) 15%, transparent) 50%,
+    transparent 100%
+  );
+}
+html[data-tint="plum"] .hero-copy {
+  text-shadow: none;
 }
 
 /* Under reduced motion the carousel still changes slide, but cuts. */

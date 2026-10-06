@@ -43,8 +43,8 @@ const STORY = [
     body: "A blanket is about forty hours. If I made them ahead and hoped, I would spend most of my time guessing what colour people want and most of my money on yarn for things nobody has asked for. Working to order means the piece you receive was made because you wanted it, in the colours you wanted, and started the day you said yes. The cost of that is patience — about three weeks of it — and I would rather ask you for patience than ask you to pay for my guessing.",
   },
   {
-    title: "What you are paying for",
-    body: "Time, mostly. The yarn in a throw costs less than you would think; the three weeks of evenings cost exactly what they sound like. I price so that an hour of this work is worth doing, and no more than that, because I would like to still be doing it in ten years and I would like the people buying it to be ordinary people furnishing ordinary homes. If a price on this site looks high, the honest answer is that it is a fair wage for forty hours, and the dishonest answer would have been a machine.",
+    title: "Made to last",
+    body: "Everything is worked in a chenille I chose after trying a lot of others: soft enough to sleep under, dense enough to be warm, and tough enough to go through the washing machine without pilling or fading. The edges are finished so they stay straight and the corners stay square. I want a piece from here to look the same on its hundredth evening as it did on its first — and if it ever does not, I want to hear about it, because I would rather mend it than have it put away.",
   },
 ] as const;
 
@@ -86,8 +86,8 @@ const STEPS = [
     body: "Every stitch pattern works up to a different size, so each piece starts with a small square worked and measured. That square is what turns \"a throw, about 50 by 60\" into a stitch count. It also gets washed, because yarn moves.",
   },
   {
-    title: "Forty hours at the hook",
-    body: "There is no machine that makes crochet. Every stitch in every piece on this site was pulled through the one before it by hand. A throw is roughly three weeks of evenings — which is the honest answer to why it costs what it costs.",
+    title: "Three weeks at the hook",
+    body: "There is no machine that makes crochet. Every stitch in every piece on this site was pulled through the one before it by hand. A throw is roughly three weeks of evenings, and you can feel every one of them in the weight of it.",
   },
   {
     title: "Blocking and finishing",

@@ -27,11 +27,11 @@ export const NAV_OPTIONS: Array<{ value: NavOption; label: string; hint: string 
 ];
 
 export const TINT_OPTIONS: Array<{ value: TintOption; label: string; hint: string }> = [
-  { value: "plum", label: "Plum wash", hint: "Warm plum shadow over the photographs" },
   { value: "natural", label: "Natural", hint: "Neutral shadow, truer colour in the blankets" },
+  { value: "plum", label: "Plum wash", hint: "Warm plum shadow over the photographs" },
 ];
 
-export const PREVIEW_DEFAULTS = { nav: "cream" as NavOption, tint: "plum" as TintOption };
+export const PREVIEW_DEFAULTS = { nav: "cream" as NavOption, tint: "natural" as TintOption };
 
 /** Runs before paint. Kept tiny and dependency-free on purpose. */
 export const PREVIEW_BOOT_SCRIPT = `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(

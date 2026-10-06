@@ -205,20 +205,21 @@ export default async function HomePage() {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="reveal order-2 flex flex-col items-center text-center lg:order-1">
             <StitchGlyph className="mb-7 h-6 w-auto text-rubine" loops={4} />
-            <p className="eyebrow mb-4">Why it costs what it costs</p>
+            <p className="eyebrow mb-4">Made by hand, made to last</p>
             <h2 id="craft-heading" className="display-lg">
-              A throw is about forty hours.
+              Made to be used every day.
             </h2>
             <div className="prose-editorial mt-6 flex flex-col gap-4 text-muted">
               <p>
-                There is no machine that makes crochet. Every stitch in every piece on this site was
-                pulled through the one before it by hand, which is why a blanket takes three weeks
-                and why no two are quite identical.
+                Every piece here is worked by hand, one stitch at a time, in a soft chenille chosen
+                because it holds its shape, keeps its colour, and goes through the wash without
+                complaint. These are blankets for the sofa, the car and the end of a long day — not
+                for the back of a cupboard.
               </p>
               <p>
-                The yarn is chosen before the pattern is. Cotton for the pieces that will be washed
-                often, a chenille for the ones meant to be sat under. What you are paying for is the
-                time, and the fact that it was spent on your piece specifically.
+                The edges are finished so they stay straight, the stitch is dense enough to be
+                warm, and the yarn is forgiving of dogs, children and spilled coffee. Made slowly,
+                so it can be loved quickly and for a long time.
               </p>
             </div>
             <Link href="/meet-the-maker#process" className="btn btn-ghost mt-8">

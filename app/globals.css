@@ -9,19 +9,19 @@
 
 @theme {
   /* --- brand palette -------------------------------------------------- */
-  --color-cream: #f7f2e9; /* page ground */
-  --color-parchment: #f0e9dc; /* raised surface */
-  --color-linen: #e7decd; /* hairlines, inactive fills */
+  --color-cream: #f1e6d2; /* page ground — deepened from #f7f2e9 */
+  --color-parchment: #e9dcc3; /* raised surface */
+  --color-linen: #ded0b3; /* hairlines, inactive fills */
   --color-camel: #bcb09a; /* "Camel Coat" */
-  --color-boho: #7b694e; /* "Boho" */
-  --color-clay: #6b5a42; /* darkened Boho — body-safe muted text, 5.9:1 on cream */
-  --color-rubine: #813a3e; /* "Rubine" — the accent. 7.1:1 on cream */
-  --color-rubine-deep: #6c2f33; /* hover/active */
-  --color-tamarind: #361019; /* "Tamarind" — dark sections. 13.4:1 with cream */
-  --color-roast: #280b0f; /* "Italian Roast" — ink. 15.1:1 on cream */
+  --color-boho: #6f5e45; /* "Boho" — 5.0:1 on cream, safe for small text */
+  --color-clay: #64533c; /* darkened Boho — body-safe muted text, 6.0:1 on cream */
+  --color-rubine: #5e2338; /* "Rubine" — the plum accent, deepened. 9.6:1 on cream */
+  --color-rubine-deep: #4a1a2c; /* hover/active */
+  --color-tamarind: #2c0c1a; /* "Tamarind" — dark sections. 14.5:1 with cream */
+  --color-roast: #1f0810; /* "Italian Roast" — ink. 15.4:1 on cream */
 
   /* On dark grounds the accent has to come up to stay legible. */
-  --color-rubine-light: #d9958c; /* 7.0:1 on tamarind */
+  --color-rubine-light: #dc9a96; /* 7.8:1 on tamarind */
   --color-camel-light: #d6cab2;
 
   /* --- semantic ------------------------------------------------------- */
@@ -406,7 +406,7 @@
   }
   .field::placeholder {
     /* 4.6:1 on cream — placeholders are text and have to pass too. */
-    color: #8a7a62;
+    color: #74644e;
     opacity: 1;
   }
   .field:hover {
@@ -520,5 +520,71 @@
     font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+  }
+}
+
+/* ===========================================================================
+   Homepage hero carousel
+   Sized to the viewport minus the header so the first slide fills the screen
+   edge to edge, with a floor so it never collapses on a short landscape phone
+   and a ceiling so it never becomes a wall on a tall monitor.
+   =========================================================================== */
+
+.hero {
+  min-height: clamp(34rem, calc(100svh - 5.25rem), 58rem);
+}
+
+.hero-frame {
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 1.1s var(--ease-quiet),
+    transform 7s linear;
+}
+.hero-frame[data-active="true"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-copy {
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 0.7s var(--ease-quiet) 0.15s,
+    transform 0.7s var(--ease-quiet) 0.15s;
+}
+.hero-copy[data-active="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* The progress rule fills across the interval, driven by CSS so it stays in
+   lockstep with the timer without a second clock. */
+@keyframes hero-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+.hero-progress {
+  width: 0%;
+}
+.hero-progress[data-active="true"] {
+  width: 100%;
+}
+.hero-progress[data-active="true"][data-playing="true"] {
+  animation-name: hero-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-frame {
+    transform: none;
+  }
+  .hero-copy {
+    transform: none;
   }
 }

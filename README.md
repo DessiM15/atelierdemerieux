@@ -68,19 +68,20 @@ All optional. An item with none of them renders as a plain ready-to-ship piece, 
 
 ```
 app/
-  page.tsx                      home — atmospheric hero, shop one tap away
+  page.tsx                      home — full-bleed collection hero, shop one tap away
   shop/                         grid, category, product detail
-  commission/                   custom-order request flow
-  atelier/                      meet the maker + process
+  custom-order/                 custom-order request flow (was /commission)
+  meet-the-maker/               meet the maker + process (was /atelier)
   checkout/                     on-site payment + confirmation
   policies/[slug]/              shipping, returns, care, privacy, terms
   accessibility/                the conformance statement
   api/
     checkout/                   order + payment against Square
-    commission/  waitlist/      leads → Square customer directory
+    custom-order/  waitlist/    leads → Square customer directory
     webhooks/square/            signature-verified cache busting
 components/                     UI, one client island per interactive region
 lib/
+  collections.ts                seasonal hero collections (the Fall blankets)
   square/                       typed REST wrappers (client, catalog,
                                 inventory, orders, customers)
   seed.ts                       stand-in catalogue used when Square is absent
@@ -121,6 +122,8 @@ Load-bearing details, so they are not undone by accident:
 ---
 
 ## Still to do
+
+- [ ] Replace the SAMPLE copy on `/meet-the-maker` (facts, story, FAQ, quote) and the sample reviews on the homepage with Sydney's real details
 
 - [ ] Replace `CONTACT_EMAIL` and the business address in `lib/policies.ts`
 - [ ] Confirm real shipping rates and update `lib/shipping.ts` (currently free over $150, $8 flat below)

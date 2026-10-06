@@ -64,7 +64,7 @@ export async function POST(request: Request) {
   // Written so Sydney can read it in the Square app on her phone and quote
   // from it without opening anything else.
   const note = [
-    `COMMISSION REQUEST — ${pieceType}`,
+    `CUSTOM ORDER REQUEST — ${pieceType}`,
     size ? `Size: ${size}` : null,
     colourway.length > 0 ? `Colours: ${colourway.join(", ")}` : null,
     occasion ? `Occasion: ${occasion}` : null,
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     ...(rest.length > 0 ? { familyName: rest.join(" ") } : {}),
     ...(phone ? { phone } : {}),
     note,
-    referenceId: "commission",
+    referenceId: "custom-order",
   });
 
   if (!result.ok) {

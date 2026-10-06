@@ -60,8 +60,8 @@ export default async function ShopPage() {
       {sorted.length === 0 ? (
         <p className="prose-editorial mt-16 text-muted">
           The shop is being set up. Come back shortly, or{" "}
-          <Link href="/commission" className="link">
-            commission a piece
+          <Link href="/custom-order" className="link">
+            place a custom order
           </Link>{" "}
           in the meantime.
         </p>

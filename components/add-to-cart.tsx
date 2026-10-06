@@ -195,7 +195,7 @@ function AvailabilityNote({
         </p>
         <p className="text-[0.9375rem] leading-relaxed text-muted">
           {product.oneOfAKind
-            ? "This one has gone and there isn't another. Sydney can make something close — leave your email, or commission a piece."
+            ? "This one has gone and there isn't another. Sydney can make something close — leave your email, or place a custom order."
             : "Not in stock right now. Leave your email and we'll write the moment it's back."}
         </p>
       </div>

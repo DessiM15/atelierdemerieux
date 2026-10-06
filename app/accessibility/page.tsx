@@ -35,7 +35,7 @@ const MEASURES = [
   },
   {
     title: "Contrast",
-    body: "Every text and background pair in use was checked rather than assumed. Body text sits at 15:1 against the page, the plum accent at 7.1:1 — above the 4.5:1 AA threshold and past AAA. Placeholder text, which is frequently missed, clears AA too.",
+    body: "Every text and background pair in use was checked rather than assumed. Body text sits at 15:1 against the page, the plum accent at 9.6:1 — above the 4.5:1 AA threshold and past AAA. Placeholder text, which is frequently missed, clears AA too.",
   },
   {
     title: "Colour is never the only signal",

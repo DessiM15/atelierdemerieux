@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getCategories, getProducts } from "@/lib/square/catalog";
+import { availabilityOf, getCategories, getProducts, lowestPrice, scarcityNote } from "@/lib/square/catalog";
+import { FALL_COLLECTION } from "@/lib/collections";
 import { ProductCard } from "@/components/product-card";
 import { ProductMedia, WovenTile } from "@/components/product-media";
+import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { StitchGlyph } from "@/components/wordmark";
 import { SHIPPING } from "@/lib/shipping";
 import { formatMoney } from "@/lib/money";
@@ -16,8 +18,8 @@ export const metadata: Metadata = {
 /** One representative photograph per category tile, in category order. */
 const CATEGORY_IMAGES = [
   {
-    src: "/products/autumn-blanket.jpg",
-    alt: "A chunky crochet blanket in blocks of cream and burnt rust, draped across a sofa",
+    src: "/products/olive-blanket.jpg",
+    alt: "A deep olive-green chunky crochet blanket draped over a cream armchair",
   },
   {
     src: "/products/rose-coasters.jpg",
@@ -29,72 +31,96 @@ const CATEGORY_IMAGES = [
   },
 ] as const;
 
+/**
+ * SAMPLE COPY. These are stand-in reviews written to show Sydney where real
+ * ones will sit and how long they should be. Replace with genuine customer
+ * words (with permission) before launch — never ship invented reviews.
+ */
+const KIND_WORDS = [
+  {
+    quote:
+      "It is heavier than I expected and that is exactly the point. Nobody in this house has sat on the sofa without it since.",
+    name: "Sample review",
+    piece: "The Olive Blanket",
+  },
+  {
+    quote:
+      "I sent her a photo of the nursery and a due date. What came back matched the paint, and arrived a week early.",
+    name: "Sample review",
+    piece: "Custom baby blanket",
+  },
+  {
+    quote:
+      "The bows are stitched on one at a time and you can tell. It looks like something that was made, not bought.",
+    name: "Sample review",
+    piece: "The Bow Blanket",
+  },
+] as const;
+
 export default async function HomePage() {
   const [products, categories] = await Promise.all([getProducts(), getCategories()]);
 
-  const featured = products.slice(0, 3);
-  const portrait = products[3];
+  // The hero slides carry the live price and availability of the product they
+  // point at, so the first thing on the page never disagrees with the shop.
+  const slides: HeroSlide[] = FALL_COLLECTION.slides.map((slide) => {
+    const product = products.find((entry) => entry.slug === slide.slug);
+    if (!product) return slide;
+    const availability = availabilityOf(product);
+    const price = lowestPrice(product);
+    const hasVariants = product.variations.length > 1;
+    const note =
+      availability === "sold-out"
+        ? "Sold"
+        : (scarcityNote(product) ??
+          (product.leadTime
+            ? `Made to order · ${product.leadTime.minDays}–${product.leadTime.maxDays} days`
+            : "Ready to ship"));
+    return {
+      ...slide,
+      price: `${hasVariants ? "From " : ""}${formatMoney(price)}`,
+      note,
+    };
+  });
+
+  const inCollection = new Set(FALL_COLLECTION.slides.map((slide) => slide.slug));
+  const featured = products.filter((product) => !inCollection.has(product.slug)).slice(0, 3);
+  const portrait = products.find((product) => product.slug === "the-bow-blanket") ?? products[0];
 
   return (
     <>
       {/* =====================================================================
-          Hero — atmospheric, but the shop is one tap away from the first
-          frame. Sized to its content rather than to 100vh, so the featured
-          row breaks the fold on every screen and nobody has to scroll to
-          discover that this is a store.
+          Hero — the fall blankets, full bleed, one at a time.
           ===================================================================== */}
-      <section className="relative">
-        <div className="grid items-stretch lg:grid-cols-[1.05fr_1fr]">
-          <div className="order-2 flex flex-col justify-center px-[var(--spacing-gutter)] py-16 sm:py-24 lg:order-1 lg:py-32">
-            <div className="max-w-[34rem]">
-              <p className="eyebrow mb-7">Handmade in small batches</p>
+      <HeroCarousel
+        eyebrow={FALL_COLLECTION.eyebrow}
+        title={FALL_COLLECTION.title}
+        slides={slides}
+        shopHref={FALL_COLLECTION.href}
+      />
 
-              <h1 className="display-xl">
-                Worked slowly,
-                <br />
-                in plum and cream.
-              </h1>
-
-              <p className="prose-editorial mt-7 text-muted">
-                Blankets heavy enough to stay where you put them, and small things that make a room
-                feel finished. Every piece is made by one pair of hands — most of them only once.
-              </p>
-
-              <div className="mt-9 flex flex-wrap gap-3">
-                <Link href="/shop" className="btn btn-primary">
-                  Shop the atelier
-                </Link>
-                <Link href="/commission" className="btn btn-secondary">
-                  Commission a piece
-                </Link>
-              </div>
-
-              <p className="mt-6 text-[0.8125rem] text-muted">
-                Free shipping over {formatMoney(SHIPPING.freeThreshold)} · Pay in 4 with Afterpay
-              </p>
-            </div>
-          </div>
-
-          <div className="relative order-1 min-h-[46vh] sm:min-h-[58vh] lg:order-2 lg:min-h-[38rem]">
-            <Image
-              src="/products/latte-blanket.jpg"
-              alt="A camel crochet blanket with small heart motifs spread across a cream sofa in a sunlit room"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
+      {/* A quiet strip of the practical things, so they are not fighting the
+          photographs for attention in the hero itself. */}
+      <div className="border-b border-rule bg-parchment">
+        <div className="shell flex flex-wrap items-center justify-center gap-x-10 gap-y-2 py-3.5 text-center text-[0.75rem] uppercase tracking-[0.18em] text-muted">
+          <span>Free shipping over {formatMoney(SHIPPING.freeThreshold)}</span>
+          <span className="hidden sm:inline" aria-hidden="true">
+            ·
+          </span>
+          <span>Pay in 4 with Afterpay</span>
+          <span className="hidden sm:inline" aria-hidden="true">
+            ·
+          </span>
+          <span>Made by hand, one at a time</span>
         </div>
-      </section>
+      </div>
 
       {/* =====================================================================
-          Featured — deliberately the second thing on the page.
+          Featured — the small things, since the blankets had the hero.
           ===================================================================== */}
       <section aria-labelledby="featured-heading" className="shell pt-20 sm:pt-28">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="eyebrow mb-3">On the hook now</p>
+            <p className="eyebrow mb-3">On the shelf now</p>
             <h2 id="featured-heading" className="display-lg">
               Ready to go home
             </h2>
@@ -107,14 +133,14 @@ export default async function HomePage() {
         {featured.length > 0 ? (
           <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} priority={index === 0} />
+              <ProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
         ) : (
           <p className="prose-editorial text-muted">
             The shop is being set up. Come back shortly, or{" "}
-            <Link href="/commission" className="link">
-              commission something
+            <Link href="/custom-order" className="link">
+              place a custom order
             </Link>{" "}
             in the meantime.
           </p>
@@ -141,11 +167,11 @@ export default async function HomePage() {
               </p>
               <p>
                 The yarn is chosen before the pattern is. Cotton for the pieces that will be washed
-                often, a merino blend for the ones meant to be sat under. What you are paying for is
-                the time, and the fact that it was spent on your piece specifically.
+                often, a chenille for the ones meant to be sat under. What you are paying for is the
+                time, and the fact that it was spent on your piece specifically.
               </p>
             </div>
-            <Link href="/atelier#process" className="btn btn-ghost mt-8">
+            <Link href="/meet-the-maker#process" className="btn btn-ghost mt-8">
               How a piece is made
             </Link>
           </div>
@@ -170,7 +196,7 @@ export default async function HomePage() {
         <section aria-labelledby="categories-heading" className="shell pt-24 sm:pt-32">
           <p className="eyebrow mb-3">Browse</p>
           <h2 id="categories-heading" className="display-lg mb-10">
-            By what it's for
+            By what it&apos;s for
           </h2>
 
           <ul className="grid gap-6 sm:grid-cols-3">
@@ -205,23 +231,52 @@ export default async function HomePage() {
       ) : null}
 
       {/* =====================================================================
-          Commission — the highest-margin thing Sydney sells, given a full
+          Kind words — sample copy, see KIND_WORDS above.
+          ===================================================================== */}
+      <section aria-labelledby="words-heading" className="shell pt-24 sm:pt-32">
+        <div className="mb-10 max-w-2xl">
+          <p className="eyebrow mb-3">Kind words</p>
+          <h2 id="words-heading" className="display-lg">
+            From the people who have one
+          </h2>
+        </div>
+        <ul className="grid gap-px overflow-hidden border border-rule bg-rule md:grid-cols-3">
+          {KIND_WORDS.map((entry, index) => (
+            <li
+              key={entry.quote}
+              className="reveal flex flex-col justify-between gap-8 bg-cream p-7 sm:p-9"
+              data-reveal-delay={index * 80}
+            >
+              <blockquote className="font-serif text-[1.25rem] leading-[1.5] text-ink">
+                <StitchGlyph className="mb-5 h-5 w-auto text-camel" loops={2} />
+                &ldquo;{entry.quote}&rdquo;
+              </blockquote>
+              <p className="text-[0.75rem] uppercase tracking-[0.18em] text-muted">
+                {entry.name} <span aria-hidden="true">·</span> {entry.piece}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* =====================================================================
+          Custom order — the highest-margin thing Sydney sells, given a full
           band rather than a footer link.
           ===================================================================== */}
-      <section aria-labelledby="commission-heading" className="on-dark mt-24 sm:mt-32">
+      <section aria-labelledby="custom-heading" className="on-dark mt-24 sm:mt-32">
         <div className="shell grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>
             <p className="eyebrow mb-4">Made for you</p>
-            <h2 id="commission-heading" className="display-lg">
-              Something that doesn't exist yet
+            <h2 id="custom-heading" className="display-lg">
+              Something that doesn&apos;t exist yet
             </h2>
             <p className="prose-editorial mt-6 text-camel-light">
               A blanket in her colours for a wedding. A christening piece with a name worked into the
               corner. Tell Sydney what you have in mind and she will come back with a price, a
               timeline, and a yarn.
             </p>
-            <Link href="/commission" className="btn btn-inverse mt-8">
-              Start a commission
+            <Link href="/custom-order" className="btn btn-inverse mt-8">
+              Start a custom order
             </Link>
           </div>
 

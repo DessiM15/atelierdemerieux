@@ -8,8 +8,8 @@ import { Wordmark } from "./wordmark";
 
 const NAV = [
   { href: "/shop", label: "Shop" },
-  { href: "/commission", label: "Commission" },
-  { href: "/atelier", label: "The Atelier" },
+  { href: "/custom-order", label: "Custom Order" },
+  { href: "/meet-the-maker", label: "Meet the Maker" },
 ] as const;
 
 export function SiteHeader() {

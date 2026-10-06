@@ -93,8 +93,8 @@ export function ConfirmationDetails() {
         <Link href="/shop" className="btn btn-secondary">
           Keep looking
         </Link>
-        <Link href="/commission" className="btn btn-ghost">
-          Commission a piece
+        <Link href="/custom-order" className="btn btn-ghost">
+          Start a custom order
         </Link>
       </div>
     </div>

@@ -10,7 +10,7 @@ type Status = "idle" | "sending" | "done" | "error";
  *
  * Shown wherever a piece can't be bought. A sold-out one-of-a-kind listing is
  * the most persuasive page on the site — someone is looking at proof the work
- * is wanted — so it collects an email and points at a commission rather than
+ * is wanted — so it collects an email and points at a custom order rather than
  * being a dead end.
  */
 export function WaitlistForm({
@@ -93,8 +93,8 @@ export function WaitlistForm({
 
       <p className="text-[0.8125rem] text-muted">
         Don't want to wait?{" "}
-        <Link href="/commission" className="link">
-          Commission one in your colours
+        <Link href="/custom-order" className="link">
+          Order one in your colours
         </Link>
         .
       </p>

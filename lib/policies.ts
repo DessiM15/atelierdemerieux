@@ -103,9 +103,9 @@ export const policies: Policy[] = [
         ],
       },
       {
-        heading: "Commissions",
+        heading: "Custom orders",
         paragraphs: [
-          "Custom and commissioned work is final from the moment it is started, because it is made to a specification only you asked for. Sydney will confirm colour, size and any lettering in writing before beginning, and that confirmation is what the finished piece is measured against.",
+          "Custom-order work is final from the moment it is started, because it is made to a specification only you asked for. Sydney will confirm colour, size and any lettering in writing before beginning, and that confirmation is what the finished piece is measured against.",
         ],
       },
       {
@@ -164,7 +164,7 @@ export const policies: Policy[] = [
       {
         heading: "What we collect",
         paragraphs: [
-          "When you buy something: your name, email address, shipping address, and a phone number if you give one. When you join the list or ask to be told about a piece: your email address. When you request a commission: what you told us in the form.",
+          "When you buy something: your name, email address, shipping address, and a phone number if you give one. When you join the list or ask to be told about a piece: your email address. When you request a custom order: what you told us in the form.",
         ],
       },
       {
@@ -231,9 +231,9 @@ export const policies: Policy[] = [
         ],
       },
       {
-        heading: "Commissions",
+        heading: "Custom orders",
         paragraphs: [
-          "A commission begins when Sydney confirms the specification in writing and you pay the invoice. Changes after that point may change the price or the date, and both will be agreed with you before any further work. Commissioned work is final sale.",
+          "A custom order begins when Sydney confirms the specification in writing and you pay the invoice. Changes after that point may change the price or the date, and both will be agreed with you before any further work. Custom-order work is final sale.",
         ],
       },
       {

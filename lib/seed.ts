@@ -92,12 +92,12 @@ export const seedProducts: Product[] = [
     slug: "latte-blanket",
     name: "The Latte Blanket",
     description:
-      "Warm camel worked in a close stitch, with small hearts set into the ground rather than sewn on top. Reads as texture from across a room and as detail up close. The one to put on a sofa you do not want to change.",
+      "Cream fading through camel to espresso in wide bands, with small hearts set into the ground rather than sewn on top. Reads as texture from across a room and as detail up close. The one to put on a sofa you do not want to change.",
     categoryIds: ["cat-blankets"],
     images: [
       image(
         "latte-blanket",
-        "A camel-coloured crochet blanket with small raised heart motifs, spread over a cream sofa",
+        "A crochet blanket in bands of cream, camel and dark brown with small raised heart motifs, spread over a cream sofa",
       ),
     ],
     variations: [
@@ -121,12 +121,12 @@ export const seedProducts: Product[] = [
     slug: "autumn-blanket",
     name: "The Autumn Blanket",
     description:
-      "Cream and burnt rust in wide blocks, worked in a chunky stitch that holds its shape. Heavy enough to stay where you put it. Made once in this colourway.",
+      "Olive, cream and burnt rust in three wide bands, worked in a chunky stitch that holds its shape. Heavy enough to stay where you put it. Made once in this colourway.",
     categoryIds: ["cat-blankets"],
     images: [
       image(
         "autumn-blanket",
-        "A chunky crochet blanket in wide blocks of cream and burnt rust, draped across a sofa",
+        "A chunky crochet blanket in wide bands of olive, cream and burnt rust, draped across a cream sofa",
       ),
     ],
     variations: [

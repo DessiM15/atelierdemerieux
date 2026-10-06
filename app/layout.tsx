@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     "handmade crochet blanket",
     "crochet throw",
     "handmade home goods",
-    "custom crochet commission",
+    "custom crochet order",
   ],
   openGraph: {
     type: "website",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f7f2e9",
+  themeColor: "#f1e6d2",
   // Zoom is never disabled. Capping it, or setting user-scalable=no, is a
   // direct WCAG 1.4.4 failure and one of the most common ones on the web.
   width: "device-width",

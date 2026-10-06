@@ -167,10 +167,10 @@ export interface OrderSummary {
 }
 
 /* -------------------------------------------------------------------------
-   Commission & waitlist
+   Custom order & waitlist
    ------------------------------------------------------------------------- */
 
-export interface CommissionRequest {
+export interface CustomOrderRequest {
   name: string;
   email: string;
   phone?: string;

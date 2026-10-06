@@ -3,7 +3,7 @@ import "server-only";
 import { type SquareConfig, getSquareConfig, idempotencyKey, squareFetch } from "./client";
 
 /**
- * Commission requests and waitlist signups land in Square's customer
+ * Custom order requests and waitlist signups land in Square's customer
  * directory.
  *
  * Deliberately not a third-party CRM or ESP. Sydney already lives in the
@@ -36,7 +36,7 @@ export interface UpsertCustomerInput {
   phone?: string;
   /** Appended to any existing note, newest first, so history is not lost. */
   note: string;
-  /** Groups leads in the dashboard, e.g. "commission" or "waitlist". */
+  /** Groups leads in the dashboard, e.g. "custom-order" or "waitlist". */
   referenceId?: string;
 }
 

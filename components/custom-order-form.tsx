@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 
 /* ===========================================================================
-   Options — kept in sync with the server's allowlist in /api/commission.
+   Options — kept in sync with the server's allowlist in /api/custom-order.
    =========================================================================== */
 
 const PIECE_TYPES = [
@@ -16,11 +16,11 @@ const PIECE_TYPES = [
 ] as const;
 
 const COLOURS = [
-  { name: "Plum", hex: "#813a3e" },
-  { name: "Taupe", hex: "#7b694e" },
-  { name: "Cream", hex: "#f0e9dc" },
+  { name: "Plum", hex: "#5e2338" },
+  { name: "Taupe", hex: "#6f5e45" },
+  { name: "Cream", hex: "#e9dcc3" },
   { name: "Camel", hex: "#bcb09a" },
-  { name: "Deep wine", hex: "#361019" },
+  { name: "Deep wine", hex: "#2c0c1a" },
   { name: "Sydney's choice", hex: "" },
 ] as const;
 
@@ -56,7 +56,7 @@ type Errors = Partial<Record<keyof Values | "form", string>>;
 
 /* ========================================================================= */
 
-export function CommissionForm() {
+export function CustomOrderForm() {
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -105,7 +105,7 @@ export function CommissionForm() {
     setErrors({});
 
     try {
-      const response = await fetch("/api/commission", {
+      const response = await fetch("/api/custom-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

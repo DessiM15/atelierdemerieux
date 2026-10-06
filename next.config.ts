@@ -14,6 +14,15 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    // The two pages were renamed after the first build. Anything already
+    // shared or indexed under the old names lands in the right place.
+    return [
+      { source: "/commission", destination: "/custom-order", permanent: true },
+      { source: "/atelier", destination: "/meet-the-maker", permanent: true },
+      { source: "/api/commission", destination: "/api/custom-order", permanent: false },
+    ];
+  },
   async headers() {
     return [
       {

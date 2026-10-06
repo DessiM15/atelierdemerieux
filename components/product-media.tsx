@@ -13,9 +13,9 @@ import type { ProductImage } from "@/lib/types";
 type Tone = "plum" | "cream" | "taupe" | "camel";
 
 const TONES: Record<Tone, { ground: string; thread: string; mark: string }> = {
-  plum: { ground: "#361019", thread: "#7B4046", mark: "#5A2C33" },
-  cream: { ground: "#F0E9DC", thread: "#D5C9B2", mark: "#DFD4BF" },
-  taupe: { ground: "#7B694E", thread: "#9C8A6C", mark: "#8C7A5C" },
+  plum: { ground: "#2c0c1a", thread: "#6E3448", mark: "#4A1F30" },
+  cream: { ground: "#E9DCC3", thread: "#CDBE9F", mark: "#D8CAAC" },
+  taupe: { ground: "#6F5E45", thread: "#8F7D5F", mark: "#7F6D4F" },
   camel: { ground: "#BCB09A", thread: "#D4CAB6", mark: "#C8BDA6" },
 };
 

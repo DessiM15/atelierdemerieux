@@ -12,9 +12,9 @@ import type { CollectionSlide } from "@/lib/collections";
  * WAI-ARIA carousel pattern, which matters more here than usual because
  * auto-rotating content is the single most common WCAG failure on a homepage:
  *
- * - Rotation pauses on hover and on keyboard focus, and there is an explicit
- *   pause control (SC 2.2.2, Pause/Stop/Hide). Rotation never starts at all if
- *   the OS asks for reduced motion.
+ * - Rotation runs by default and there is an explicit pause control, which is
+ *   what SC 2.2.2 (Pause/Stop/Hide) requires. Under reduced motion the slides
+ *   still change but cut rather than slide and zoom.
  * - The slide region is `aria-live="polite"` only while rotation is paused, so
  *   a screen reader is told about slides the user asked for and never about
  *   ones the timer picked.
@@ -48,12 +48,9 @@ export function HeroCarousel({
   interval = 6500,
 }: HeroCarouselProps) {
   const [active, setActive] = useState(0);
-  // `userPaused` is the explicit control; `hovered` and `focused` are the
-  // implicit ones. Rotation runs only when all three are clear.
+  // The pause button is the only thing that stops rotation, apart from the
+  // tab being in the background. Choosing a slide by hand restarts the clock.
   const [userPaused, setUserPaused] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
   const [hidden, setHidden] = useState(false);
   // Progress bars restart from zero on every slide change; bumping this key
   // is how the CSS animation is retriggered without JS timers of its own.
@@ -62,21 +59,13 @@ export function HeroCarousel({
   const count = slides.length;
 
   useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReducedMotion(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
     const sync = () => setHidden(document.visibilityState === "hidden");
     sync();
     document.addEventListener("visibilitychange", sync);
     return () => document.removeEventListener("visibilitychange", sync);
   }, []);
 
-  const playing = count > 1 && !userPaused && !hovered && !focused && !reducedMotion && !hidden;
+  const playing = count > 1 && !userPaused && !hidden;
 
   const go = useCallback(
     (next: number) => {
@@ -122,12 +111,6 @@ export function HeroCarousel({
       aria-roledescription="carousel"
       aria-label={title}
       className="hero relative isolate w-full overflow-hidden bg-tamarind text-cream"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setFocused(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
-      }}
       onKeyDown={onKeyDown}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
@@ -153,9 +136,10 @@ export function HeroCarousel({
           </div>
         ))}
         {/* Two gradients: one up from the floor so the copy reads on any
-            photograph, one in from the left so the headline has room. */}
-        <div className="absolute inset-0 bg-gradient-to-t from-roast/85 via-roast/35 to-roast/10" />
-        <div className="absolute inset-0 hidden bg-gradient-to-r from-roast/60 via-roast/15 to-transparent lg:block" />
+            photograph, one in from the left so the headline has room. Their
+            colour and strength come from `data-tint` on <html>. */}
+        <div className="hero-tint-bottom absolute inset-0" />
+        <div className="hero-tint-side absolute inset-0 hidden lg:block" />
       </div>
 
       {/* --- copy -------------------------------------------------------- */}
@@ -204,14 +188,14 @@ export function HeroCarousel({
                       </p>
 
                       <div className="mt-8 flex flex-wrap gap-3">
-                        <Link href={shopHref} className="btn btn-inverse">
-                          Shop the collection
+                        <Link href={slide.shopHref ?? shopHref} className="btn btn-inverse">
+                          {slide.shopLabel ?? "Shop the collection"}
                         </Link>
                         <Link
                           href={`/shop/${slide.slug}`}
                           className="btn border-cream/60 text-cream hover:border-cream hover:bg-cream/10"
                         >
-                          View this blanket
+                          View this piece
                         </Link>
                       </div>
                     </div>
@@ -225,7 +209,7 @@ export function HeroCarousel({
               <div className="on-dark flex flex-col gap-4 bg-transparent lg:items-end">
                 <div
                   role="tablist"
-                  aria-label="Choose a blanket"
+                  aria-label="Choose a piece"
                   className="flex items-center gap-2"
                 >
                   {slides.map((slide, index) => {
@@ -261,7 +245,7 @@ export function HeroCarousel({
                     type="button"
                     onClick={() => go(active - 1)}
                     className="flex size-11 items-center justify-center border border-cream/40 transition-colors hover:border-cream"
-                    aria-label="Previous blanket"
+                    aria-label="Previous piece"
                   >
                     <Chevron direction="left" />
                   </button>
@@ -269,7 +253,7 @@ export function HeroCarousel({
                     type="button"
                     onClick={() => go(active + 1)}
                     className="flex size-11 items-center justify-center border border-cream/40 transition-colors hover:border-cream"
-                    aria-label="Next blanket"
+                    aria-label="Next piece"
                   >
                     <Chevron direction="right" />
                   </button>

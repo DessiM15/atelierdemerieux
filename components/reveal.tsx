@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
@@ -12,10 +13,17 @@ import { useEffect } from "react";
  * fully visible. The animation is an enhancement layered on top of a working
  * page, never a precondition for reading it.
  *
+ * It re-scans on every route change and watches the DOM for new `.reveal`
+ * elements, because after a client-side navigation the page is full of fresh
+ * elements that the first scan never saw. Without that, a section that was
+ * hidden for its entrance would simply never arrive.
+ *
  * It also respects `prefers-reduced-motion` by skipping the hide entirely
  * rather than animating faster.
  */
 export function RevealController() {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
 
@@ -42,23 +50,44 @@ export function RevealController() {
       { rootMargin: "0px 0px -12% 0px", threshold: 0.08 },
     );
 
-    const elements = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
-    for (const element of elements) {
-      // Anything already on screen at load resolves immediately — the first
-      // frame should never be a page of blank boxes.
+    const enlist = (element: HTMLElement) => {
+      if (element.dataset.revealed === "true" || element.dataset.revealWatched === "true") return;
+      element.dataset.revealWatched = "true";
+      // Anything already on screen resolves immediately — the first frame
+      // should never be a page of blank boxes.
       const rect = element.getBoundingClientRect();
       if (rect.top < window.innerHeight * 0.92) {
         element.dataset.revealed = "true";
       } else {
         observer.observe(element);
       }
-    }
+    };
+
+    const scan = () => {
+      for (const element of document.querySelectorAll<HTMLElement>(".reveal")) enlist(element);
+    };
+
+    scan();
+
+    // Catch elements that arrive after the scan: streamed server components,
+    // client-side navigations that resolve mid-effect, lazily rendered lists.
+    const mutations = new MutationObserver((records) => {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (!(node instanceof HTMLElement)) continue;
+          if (node.classList.contains("reveal")) enlist(node);
+          for (const element of node.querySelectorAll<HTMLElement>(".reveal")) enlist(element);
+        }
+      }
+    });
+    mutations.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       observer.disconnect();
+      mutations.disconnect();
       root.classList.remove("js-reveal-ready");
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

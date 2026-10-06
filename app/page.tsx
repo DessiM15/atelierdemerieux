@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { availabilityOf, getCategories, getProducts, lowestPrice, scarcityNote } from "@/lib/square/catalog";
 import { FALL_COLLECTION } from "@/lib/collections";
 import { ProductCard } from "@/components/product-card";
-import { ProductMedia, WovenTile } from "@/components/product-media";
 import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { StitchGlyph } from "@/components/wordmark";
 import { SHIPPING } from "@/lib/shipping";
@@ -57,6 +56,30 @@ const KIND_WORDS = [
   },
 ] as const;
 
+const WAYS = [
+  {
+    eyebrow: "On the shelf",
+    title: "Ready to ship",
+    body: "Small pieces and the occasional one-of-a-kind blanket, finished and waiting. Leaves within one business day.",
+    href: "/shop",
+    cta: "Shop what's ready",
+  },
+  {
+    eyebrow: "Started when you order",
+    title: "Made to order",
+    body: "The blankets in the collection. Nothing is on a shelf — your order starts the work, and it ships in about three weeks.",
+    href: "/shop/category/blankets-and-throws",
+    cta: "See the blankets",
+  },
+  {
+    eyebrow: "Made for you",
+    title: "Custom order",
+    body: "Your colours, your size, a name in the corner. Tell Sydney what you have in mind and she quotes within two business days.",
+    href: "/custom-order",
+    cta: "Start a custom order",
+  },
+] as const;
+
 export default async function HomePage() {
   const [products, categories] = await Promise.all([getProducts(), getCategories()]);
 
@@ -84,7 +107,6 @@ export default async function HomePage() {
 
   const inCollection = new Set(FALL_COLLECTION.slides.map((slide) => slide.slug));
   const featured = products.filter((product) => !inCollection.has(product.slug)).slice(0, 3);
-  const portrait = products.find((product) => product.slug === "the-bow-blanket") ?? products[0];
 
   return (
     <>
@@ -118,14 +140,12 @@ export default async function HomePage() {
           Featured — the small things, since the blankets had the hero.
           ===================================================================== */}
       <section aria-labelledby="featured-heading" className="shell pt-20 sm:pt-28">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow mb-3">On the shelf now</p>
-            <h2 id="featured-heading" className="display-lg">
-              Ready to go home
-            </h2>
-          </div>
-          <Link href="/shop" className="nav-link">
+        <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center text-center">
+          <p className="eyebrow mb-3">On the shelf now</p>
+          <h2 id="featured-heading" className="display-lg">
+            Ready to go home
+          </h2>
+          <Link href="/shop" className="nav-link mt-5">
             See everything
           </Link>
         </div>
@@ -148,12 +168,42 @@ export default async function HomePage() {
       </section>
 
       {/* =====================================================================
+          How ordering works — the three ways to get a piece, in plain words.
+          ===================================================================== */}
+      <section aria-labelledby="ways-heading" className="shell pt-24 sm:pt-32">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <p className="eyebrow mb-3">How it works</p>
+          <h2 id="ways-heading" className="display-lg">
+            Three ways to get a piece
+          </h2>
+        </div>
+        <ul className="grid gap-px overflow-hidden border border-rule bg-rule md:grid-cols-3">
+          {WAYS.map((way, index) => (
+            <li
+              key={way.title}
+              className="reveal flex flex-col bg-cream p-7 text-center sm:p-9"
+              data-reveal-delay={index * 80}
+            >
+              <p className="eyebrow mb-4">{way.eyebrow}</p>
+              <h3 className="display-sm">{way.title}</h3>
+              <p className="mx-auto mt-3 max-w-[34ch] flex-1 text-[0.9375rem] leading-relaxed text-muted">
+                {way.body}
+              </p>
+              <Link href={way.href} className="nav-link mx-auto mt-6">
+                {way.cta}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* =====================================================================
           The craft — the editorial beat. This is where the site slows down,
           and the only place it is allowed to.
           ===================================================================== */}
       <section aria-labelledby="craft-heading" className="shell pt-24 sm:pt-32">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className="reveal order-2 lg:order-1">
+          <div className="reveal order-2 flex flex-col items-center text-center lg:order-1">
             <StitchGlyph className="mb-7 h-6 w-auto text-rubine" loops={4} />
             <p className="eyebrow mb-4">Why it costs what it costs</p>
             <h2 id="craft-heading" className="display-lg">
@@ -194,10 +244,12 @@ export default async function HomePage() {
           ===================================================================== */}
       {categories.length > 0 ? (
         <section aria-labelledby="categories-heading" className="shell pt-24 sm:pt-32">
-          <p className="eyebrow mb-3">Browse</p>
-          <h2 id="categories-heading" className="display-lg mb-10">
-            By what it&apos;s for
-          </h2>
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+            <p className="eyebrow mb-3">Browse</p>
+            <h2 id="categories-heading" className="display-lg">
+              By what it&apos;s for
+            </h2>
+          </div>
 
           <ul className="grid gap-6 sm:grid-cols-3">
             {categories.slice(0, 3).map((category, index) => (
@@ -234,7 +286,7 @@ export default async function HomePage() {
           Kind words — sample copy, see KIND_WORDS above.
           ===================================================================== */}
       <section aria-labelledby="words-heading" className="shell pt-24 sm:pt-32">
-        <div className="mb-10 max-w-2xl">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="eyebrow mb-3">Kind words</p>
           <h2 id="words-heading" className="display-lg">
             From the people who have one
@@ -265,7 +317,7 @@ export default async function HomePage() {
           ===================================================================== */}
       <section aria-labelledby="custom-heading" className="on-dark mt-24 sm:mt-32">
         <div className="shell grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div>
+          <div className="flex flex-col items-center text-center">
             <p className="eyebrow mb-4">Made for you</p>
             <h2 id="custom-heading" className="display-lg">
               Something that doesn&apos;t exist yet
@@ -280,18 +332,17 @@ export default async function HomePage() {
             </Link>
           </div>
 
+          {/* Stock photograph (CC0, via rawpixel) until Sydney has one of her
+              own yarn in progress. */}
           <div className="reveal">
-            {portrait ? (
-              <ProductMedia
-                image={portrait.images[0]}
-                productName={portrait.name}
-                decorative
-                className="aspect-[4/5] w-full object-cover"
-                sizes="(max-width: 1024px) 90vw, 40vw"
-              />
-            ) : (
-              <WovenTile tone="camel" className="aspect-[4/5] w-full object-cover" />
-            )}
+            <Image
+              src="/stock/rust-wool.jpg"
+              alt="A single ball of burnt-rust wool resting on soft striped bedding"
+              width={1024}
+              height={683}
+              sizes="(max-width: 1024px) 90vw, 40vw"
+              className="aspect-[4/5] w-full object-cover"
+            />
           </div>
         </div>
       </section>

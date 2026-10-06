@@ -35,3 +35,6 @@ yarn-error.log*
 
 # working assets not shipped to the site
 /_assets
+
+# original photography drops from Sydney (large PNGs) — optimised copies live in public/
+/assets

@@ -21,6 +21,13 @@ export interface CollectionSlide {
   line: string;
   image: { src: string; alt: string };
   /**
+   * Where this slide's "Shop …" button goes, and what it says, when they
+   * differ from the collection's. The coasters sit in a different category
+   * from the blankets, so they need their own.
+   */
+  shopHref?: string;
+  shopLabel?: string;
+  /**
    * CSS `object-position` for the full-bleed crop. The photographs are
    * portrait and the hero is landscape, so each one needs to be told where the
    * blanket actually is.
@@ -82,6 +89,16 @@ export const FALL_COLLECTION: Collection = {
       focus: "50% 58%",
     },
     {
+      slug: "team-blanket",
+      name: "The Team Blanket",
+      line: "Your team's colours at each end and the crest in the middle. Four photographed, any team made.",
+      image: {
+        src: "/products/team-blanket-dallas.jpg",
+        alt: "A chunky navy crochet blanket with grey and cream stripes and a large star worked into the centre, over someone reading in an armchair",
+      },
+      focus: "50% 60%",
+    },
+    {
       slug: "the-bow-blanket",
       name: "The Bow Blanket",
       line: "A cream ground with cornflower-blue bows, each one made separately and stitched on by hand.",
@@ -90,6 +107,18 @@ export const FALL_COLLECTION: Collection = {
         alt: "A thick cream crochet blanket with a wide blue band and hand-stitched blue bows, draped across a sofa",
       },
       focus: "50% 62%",
+    },
+    {
+      slug: "rose-coasters",
+      name: "Rose Coasters",
+      line: "Four flat rounds edged in hand-worked roses. Dense enough for a cold glass, and they wash.",
+      image: {
+        src: "/products/rose-coasters.jpg",
+        alt: "A set of cream crochet coasters edged with small red roses on a marble table, beside a matching red mug cosy and a lit candle",
+      },
+      shopHref: "/shop/category/for-the-home",
+      shopLabel: "Shop for the home",
+      focus: "50% 55%",
     },
   ],
 };

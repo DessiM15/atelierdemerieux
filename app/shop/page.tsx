@@ -23,18 +23,27 @@ export default async function ShopPage() {
 
   return (
     <div className="shell pt-12 sm:pt-16">
-      <header className="max-w-2xl">
+      <header className="mx-auto max-w-2xl text-center">
         <p className="eyebrow mb-4">The shop</p>
         <h1 className="display-xl">Everything in the atelier</h1>
-        <p className="prose-editorial mt-6 text-muted">
-          What is here is what exists. Some pieces are on the shelf; others are started the day you
-          order them. Both say so on the page.
+        <p className="prose-editorial mx-auto mt-6 text-muted">
+          What is here is what exists. Some pieces are on the shelf and leave within a day; the
+          blankets are started the day you order them and ship in about three weeks. Every page
+          says which it is, before you pay rather than after.
+        </p>
+        <p className="mx-auto mt-5 max-w-[52ch] text-[0.9375rem] leading-relaxed text-muted">
+          Everything is worked by one pair of hands in a machine-washable chenille or cotton.
+          If the colour you want isn&apos;t here, it can be —{" "}
+          <Link href="/custom-order" className="link">
+            ask for it
+          </Link>
+          .
         </p>
       </header>
 
       {categories.length > 0 ? (
         <nav aria-label="Categories" className="mt-10">
-          <ul className="flex flex-wrap gap-2">
+          <ul className="flex flex-wrap justify-center gap-2">
             <li>
               <span
                 aria-current="page"

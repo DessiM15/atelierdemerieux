@@ -47,15 +47,17 @@ export default async function CategoryPage({ params }: PageProps) {
         </ol>
       </nav>
 
-      <header className="max-w-2xl">
+      <header className="mx-auto max-w-2xl text-center">
+        <p className="eyebrow mb-4">The shop</p>
         <h1 className="display-xl">{category.name}</h1>
-        {category.blurb ? (
-          <p className="prose-editorial mt-6 text-muted">{category.blurb}</p>
-        ) : null}
+        <p className="prose-editorial mx-auto mt-6 text-muted">
+          {category.blurb ??
+            "Handmade crochet, worked one piece at a time. Ready-to-ship pieces leave within a day; made-to-order pieces say so and ship in about three weeks."}
+        </p>
       </header>
 
       <nav aria-label="Categories" className="mt-10">
-        <ul className="flex flex-wrap gap-2">
+        <ul className="flex flex-wrap justify-center gap-2">
           <li>
             <Link
               href="/shop"

@@ -3,6 +3,7 @@ import { StitchGlyph, WordmarkInline } from "./wordmark";
 import { NewsletterForm } from "./newsletter-form";
 import { SHIPPING } from "@/lib/shipping";
 import { formatMoney } from "@/lib/money";
+import { CONTACT_EMAIL } from "@/lib/policies";
 
 const COLUMNS = [
   {
@@ -48,9 +49,39 @@ export function SiteFooter() {
               <StitchGlyph className="h-7 w-auto text-camel" loops={3} />
               <WordmarkInline className="text-cream" />
             </div>
-            <p className="max-w-[34ch] font-serif text-lg leading-relaxed text-camel-light">
-              Handmade blankets and small goods, worked one at a time in plum, taupe and cream.
+            <p className="max-w-[36ch] font-serif text-lg leading-relaxed text-camel-light">
+              Handmade blankets and small goods, worked one at a time in plum, taupe and cream by
+              one pair of hands in Charlotte, North Carolina.
             </p>
+            {/* SAMPLE contact details — replace the email in lib/policies.ts
+                and the handle below before launch. */}
+            <dl className="flex flex-col gap-1.5 text-[0.9375rem] text-cream/85">
+              <div className="flex gap-3">
+                <dt className="w-16 shrink-0 text-camel">Write</dt>
+                <dd>
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="link">
+                    {CONTACT_EMAIL}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-16 shrink-0 text-camel">Follow</dt>
+                <dd>
+                  <a
+                    href="https://instagram.com/atelierdemerieux"
+                    className="link"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    @atelierdemerieux
+                  </a>
+                </dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-16 shrink-0 text-camel">Replies</dt>
+                <dd>Within two business days. Slower in the week before a market.</dd>
+              </div>
+            </dl>
             <NewsletterForm />
           </div>
 

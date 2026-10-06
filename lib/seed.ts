@@ -63,6 +63,14 @@ export const seedProducts: Product[] = [
         "bow-blanket-2",
         "The same cream and blue bow blanket folded over the end of a made bed, showing the chunky stitch and the raised bows",
       ),
+      image(
+        "bow-blanket-3",
+        "The bow blanket wrapped around someone on a window seat, a wide blue band with cream bows running through the middle",
+      ),
+      image(
+        "bow-blanket-4",
+        "The bow blanket draped over the end of a bed bench, showing the raised bows and the thick rolled edge",
+      ),
     ],
     variations: [
       {
@@ -99,6 +107,10 @@ export const seedProducts: Product[] = [
         "latte-blanket",
         "A crochet blanket in bands of cream, camel and dark brown with small raised heart motifs, spread over a cream sofa",
       ),
+      image(
+        "latte-blanket-2",
+        "The latte blanket pulled up over someone's knees on an armchair, showing the fade from cream through camel to espresso",
+      ),
     ],
     variations: [
       {
@@ -128,6 +140,10 @@ export const seedProducts: Product[] = [
         "autumn-blanket",
         "A chunky crochet blanket in wide bands of olive, cream and burnt rust, draped across a cream sofa",
       ),
+      image(
+        "autumn-blanket-2",
+        "The autumn blanket on a window seat in low afternoon light, the rust band spilling onto the floor",
+      ),
     ],
     variations: [
       {
@@ -155,6 +171,10 @@ export const seedProducts: Product[] = [
       image(
         "olive-blanket",
         "A deep olive-green chunky crochet blanket draped over the arm of a cream sofa",
+      ),
+      image(
+        "olive-blanket-2",
+        "The olive blanket pooled over a cream armchair while someone reads, showing the loose chunky stitch",
       ),
     ],
     variations: [
@@ -184,12 +204,79 @@ export const seedProducts: Product[] = [
         "gameday-blanket",
         "A deep burgundy crochet blanket with a cream football worked into the centre, spread across a sofa",
       ),
+      image(
+        "gameday-blanket-2",
+        "The gameday blanket over someone's lap on a leather sofa, the cream laces running down the middle",
+      ),
     ],
     variations: [
       {
         id: "seed-gameday-v1",
         name: "Throw · 50 × 60 in",
         price: { amount: 27500, currency: "USD" },
+        tracksInventory: false,
+        quantity: null,
+      },
+    ],
+    madeToOrder: true,
+    leadTime: { minDays: 21, maxDays: 28 },
+    fiber: "100% acrylic chenille, machine-washable",
+    care: "Machine wash cold on gentle in a mesh bag. Tumble dry low or lay flat.",
+    dimensions: { label: "Throw", widthIn: 50, lengthIn: 60 },
+    oneOfAKind: false,
+  },
+
+  {
+    id: "seed-team",
+    slug: "team-blanket",
+    name: "The Team Blanket",
+    description:
+      "Your team's colours and crest worked into a chunky throw — the stripes at each end, the mark in the middle. Four are photographed here; any team can be made. Note that team marks are the property of their leagues, and Sydney will confirm what she can and can't reproduce before quoting.",
+    categoryIds: ["cat-blankets"],
+    images: [
+      image(
+        "team-blanket-kansas-city",
+        "A chunky red crochet blanket with yellow and cream stripes and a Kansas City arrowhead crest worked into the centre",
+      ),
+      image(
+        "team-blanket-dallas",
+        "A chunky navy crochet blanket with grey and cream stripes and a large star worked into the centre",
+      ),
+      image(
+        "team-blanket-green-bay",
+        "A chunky dark green crochet blanket with gold and cream stripes and a Green Bay G worked into the centre",
+      ),
+      image(
+        "team-blanket-pittsburgh",
+        "A chunky black crochet blanket with gold and cream stripes and a Pittsburgh crest worked into the centre",
+      ),
+    ],
+    variations: [
+      {
+        id: "seed-team-v1",
+        name: "Kansas City",
+        price: { amount: 29500, currency: "USD" },
+        tracksInventory: false,
+        quantity: null,
+      },
+      {
+        id: "seed-team-v2",
+        name: "Dallas",
+        price: { amount: 29500, currency: "USD" },
+        tracksInventory: false,
+        quantity: null,
+      },
+      {
+        id: "seed-team-v3",
+        name: "Green Bay",
+        price: { amount: 29500, currency: "USD" },
+        tracksInventory: false,
+        quantity: null,
+      },
+      {
+        id: "seed-team-v4",
+        name: "Pittsburgh",
+        price: { amount: 29500, currency: "USD" },
         tracksInventory: false,
         quantity: null,
       },
@@ -216,6 +303,10 @@ export const seedProducts: Product[] = [
       image(
         "rose-coasters",
         "A set of cream crochet coasters edged with small red roses, arranged on a marble table beside a matching mug cosy",
+      ),
+      image(
+        "rose-coasters-2",
+        "A single rose coaster on a marble table beside a red mug sitting on a second one, showing the dense cream centre and the ring of roses",
       ),
     ],
     variations: [
@@ -255,6 +346,14 @@ export const seedProducts: Product[] = [
         "tulip-mirror-hanger",
         "A crochet hanger of three pale pink tulips on green stems, hanging from a car's rear-view mirror",
       ),
+      image(
+        "tulip-mirror-hanger-2",
+        "Two pale pink bell flowers on a green stem hanging from a rear-view mirror at golden hour",
+      ),
+      image(
+        "red-bell-hanger-scrunchies",
+        "The same bell flowers in deep red hanging from a sprig of greenery, beside a bowl of red and white ruffled scrunchies",
+      ),
     ],
     variations: [
       {
@@ -263,6 +362,13 @@ export const seedProducts: Product[] = [
         price: { amount: 2600, currency: "USD" },
         tracksInventory: true,
         quantity: 6,
+      },
+      {
+        id: "seed-tulip-hanger-v2",
+        name: "Holiday red",
+        price: { amount: 2600, currency: "USD" },
+        tracksInventory: true,
+        quantity: 3,
       },
     ],
     madeToOrder: false,
@@ -275,12 +381,16 @@ export const seedProducts: Product[] = [
     slug: "bluebell-mirror-hanger",
     name: "Bluebell Mirror Hanger",
     description:
-      "Blue and buttercup flowers worked together on one stem. Made to hang from a mirror, but it has ended up on more than one bag strap.",
+      "Blue and buttercup flowers worked together on one stem — sorority colours, as it happens, which is how most of them leave. Made to hang from a mirror, but it has ended up on more than one bag strap and door knob.",
     categoryIds: ["cat-small"],
     images: [
       image(
         "bluebell-mirror-hanger",
         "A crochet hanger of blue and yellow flowers on a green stem, hooked over the corner of a round mirror",
+      ),
+      image(
+        "bluebell-mirror-hanger-2",
+        "The blue and yellow bell flowers hanging from a brass door knob beside a round mirror",
       ),
     ],
     variations: [
@@ -308,6 +418,10 @@ export const seedProducts: Product[] = [
       image(
         "scrunchies",
         "Ruffled crochet scrunchies in deep burgundy and cream, piled in a wooden bowl",
+      ),
+      image(
+        "red-bell-hanger-scrunchies",
+        "Red and white ruffled scrunchies in a marble bowl on a dressed holiday sideboard",
       ),
     ],
     variations: [

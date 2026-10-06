@@ -588,3 +588,105 @@
     transform: none;
   }
 }
+
+/* ===========================================================================
+   Design options under review — keyed off `data-nav` and `data-tint` on
+   <html>, set by components/preview-options.tsx. Once a direction is chosen,
+   keep that block, delete the others and the panel.
+   =========================================================================== */
+
+/* --- navigation bar ------------------------------------------------------ */
+.site-header {
+  background-color: color-mix(in srgb, var(--color-cream) 95%, transparent);
+  color: var(--color-ink);
+  transition:
+    background-color 0.5s var(--ease-quiet),
+    color 0.5s var(--ease-quiet),
+    border-color 0.5s var(--ease-quiet);
+}
+.site-header[data-scrolled="true"] {
+  border-bottom-color: var(--color-rule);
+}
+
+/* Option: plum */
+html[data-nav="plum"] .site-header {
+  background-color: var(--color-rubine);
+  color: var(--color-cream);
+}
+html[data-nav="plum"] .site-header[data-scrolled="true"] {
+  border-bottom-color: color-mix(in srgb, var(--color-cream) 18%, transparent);
+}
+html[data-nav="plum"] .site-header :focus-visible {
+  outline-color: var(--color-cream);
+}
+
+/* Option: see-through over the hero, cream once the page moves. Only the
+   homepage has a hero to sit on, so other pages stay on the cream bar. */
+html[data-nav="glass"] .site-header[data-home="true"] {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+html[data-nav="glass"] .site-header[data-home="true"][data-scrolled="false"] {
+  background-color: transparent;
+  color: var(--color-cream);
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+}
+html[data-nav="glass"] .site-header[data-home="true"][data-scrolled="false"] :focus-visible {
+  outline-color: var(--color-cream);
+}
+/* The header no longer takes up space, so the hero fills the whole viewport
+   and the top of it sits behind the bar. */
+html[data-nav="glass"] .hero {
+  min-height: clamp(34rem, 100svh, 58rem);
+}
+
+/* --- hero tint ------------------------------------------------------------ */
+.hero-tint-bottom {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-roast) 85%, transparent) 0%,
+    color-mix(in srgb, var(--color-roast) 35%, transparent) 50%,
+    color-mix(in srgb, var(--color-roast) 10%, transparent) 100%
+  );
+}
+.hero-tint-side {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-roast) 60%, transparent) 0%,
+    color-mix(in srgb, var(--color-roast) 15%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+/* Option: natural — a neutral shadow instead of a plum one, lighter in the
+   middle so the yarn colours read true. A soft text shadow carries the
+   legibility the gradient gave up. */
+html[data-tint="natural"] .hero-tint-bottom {
+  background: linear-gradient(
+    to top,
+    rgba(22, 16, 12, 0.78) 0%,
+    rgba(22, 16, 12, 0.3) 42%,
+    rgba(22, 16, 12, 0.04) 100%
+  );
+}
+html[data-tint="natural"] .hero-tint-side {
+  background: linear-gradient(
+    to right,
+    rgba(22, 16, 12, 0.45) 0%,
+    rgba(22, 16, 12, 0.08) 55%,
+    transparent 100%
+  );
+}
+html[data-tint="natural"] .hero-copy {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Under reduced motion the carousel still changes slide, but cuts. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-frame,
+  .hero-copy {
+    transition-duration: 0.01ms;
+  }
+}

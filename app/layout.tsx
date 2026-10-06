@@ -5,6 +5,7 @@ import "./globals.css";
 import { CartProvider } from "@/components/cart-provider";
 import { CartDrawer } from "@/components/cart-drawer";
 import { LiveAnnouncer } from "@/components/live-announcer";
+import { PREVIEW_BOOT_SCRIPT, PreviewOptions } from "@/components/preview-options";
 import { RevealController } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -86,8 +87,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${cormorant.variable} ${jost.variable}`}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${cormorant.variable} ${jost.variable}`}
+      suppressHydrationWarning
+    >
       <body>
+        {/* REVIEW TOOL — applies the remembered design option before paint.
+            Remove together with <PreviewOptions /> once decisions are made. */}
+        <script dangerouslySetInnerHTML={{ __html: PREVIEW_BOOT_SCRIPT }} />
         <CartProvider>
           {/* First focusable element on every page. */}
           <a href="#main" className="sr-only-focusable">
@@ -105,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartDrawer />
           <LiveAnnouncer />
           <RevealController />
+          <PreviewOptions />
         </CartProvider>
       </body>
     </html>

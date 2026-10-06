@@ -3,14 +3,14 @@ import type { Product } from "@/lib/types";
 import { availabilityOf, lowestPrice, scarcityNote } from "@/lib/square/catalog";
 import { formatMoney } from "@/lib/money";
 import { ProductMedia } from "./product-media";
+import { QuickAdd } from "./quick-add";
 
 /**
  * A product in a grid.
  *
- * The whole card is one link. Scarcity and lead-time notes sit inside it as
- * plain text rather than as a second interactive element, so the card is a
- * single tab stop and the announcement a screen reader hears is one coherent
- * sentence instead of four fragments.
+ * The photograph and the name are both links to the product page; the
+ * add-to-bag control is a separate sibling so the card contains no nested
+ * interactive elements. Scarcity and lead-time notes are plain text.
  */
 export function ProductCard({
   product,
@@ -26,10 +26,11 @@ export function ProductCard({
   const scarcity = scarcityNote(product);
   const hasVariants = product.variations.length > 1;
   const image = product.images[0];
+  const href = `/shop/${product.slug}`;
 
   return (
-    <article className="reveal" data-reveal-delay={index * 70}>
-      <Link href={`/shop/${product.slug}`} className="group block">
+    <article className="reveal flex flex-col" data-reveal-delay={index * 70}>
+      <Link href={href} className="group block" tabIndex={-1} aria-hidden="true">
         <div className="relative overflow-hidden bg-parchment">
           <ProductMedia
             image={image}
@@ -49,26 +50,34 @@ export function ProductCard({
             </div>
           ) : null}
         </div>
-
-        <div className="flex flex-col gap-1.5 pt-4">
-          <h3 className="font-display text-[1.1875rem] leading-snug">{product.name}</h3>
-
-          <p className="numeric text-[0.9375rem] text-muted">
-            {hasVariants ? <span className="text-[0.8125rem]">From </span> : null}
-            {formatMoney(price)}
-          </p>
-
-          {/* At most one note per card. Stacking urgency signals is how they
-              stop being believed. */}
-          {scarcity ? (
-            <p className="text-[0.75rem] uppercase tracking-[0.16em] text-rubine">{scarcity}</p>
-          ) : availability === "made-to-order" && product.leadTime ? (
-            <p className="text-[0.75rem] uppercase tracking-[0.16em] text-boho">
-              Made to order · {product.leadTime.minDays}–{product.leadTime.maxDays} days
-            </p>
-          ) : null}
-        </div>
       </Link>
+
+      <div className="flex flex-1 flex-col gap-1.5 pt-4">
+        <h3 className="font-display text-[1.1875rem] leading-snug">
+          <Link href={href} className="hover:text-rubine">
+            {product.name}
+          </Link>
+        </h3>
+
+        <p className="numeric text-[0.9375rem] text-muted">
+          {hasVariants ? <span className="text-[0.8125rem]">From </span> : null}
+          {formatMoney(price)}
+        </p>
+
+        {/* At most one note per card. Stacking urgency signals is how they
+            stop being believed. */}
+        {scarcity ? (
+          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-rubine">{scarcity}</p>
+        ) : availability === "made-to-order" && product.leadTime ? (
+          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-boho">
+            Made to order · {product.leadTime.minDays}–{product.leadTime.maxDays} days
+          </p>
+        ) : (
+          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-boho">Ready to ship</p>
+        )}
+
+        <QuickAdd product={product} className="mt-3" />
+      </div>
     </article>
   );
 }

@@ -29,7 +29,7 @@ export function SiteHeader() {
   // A hairline appears under the header once the page has moved, so the bar
   // separates from content without being boxed in at rest.
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 8);
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -58,10 +58,13 @@ export function SiteHeader() {
   const isCurrent = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
+    // Colour, position and the see-through treatment are decided in CSS from
+    // `data-nav` on <html> (see components/preview-options.tsx) together with
+    // these two attributes, so the markup is identical across the options.
     <header
-      className={`sticky top-0 z-40 bg-cream/95 backdrop-blur-[2px] transition-[border-color] duration-500 ${
-        isScrolled ? "border-b border-rule" : "border-b border-transparent"
-      }`}
+      className="site-header sticky top-0 z-40 border-b border-transparent backdrop-blur-[2px]"
+      data-home={pathname === "/"}
+      data-scrolled={isScrolled}
     >
       <div className="shell flex items-center justify-between gap-4 py-4 sm:py-5">
         {/* --- mobile menu trigger ------------------------------------- */}
@@ -157,7 +160,7 @@ export function SiteHeader() {
         id={menuId}
         ref={menuRef}
         hidden={!isMenuOpen}
-        className="border-t border-rule bg-cream md:hidden"
+        className="border-t border-rule bg-cream text-ink md:hidden"
       >
         <nav aria-label="Main" className="shell py-4">
           <ul className="flex flex-col">

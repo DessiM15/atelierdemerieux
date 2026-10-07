@@ -5,6 +5,7 @@ import "./globals.css";
 import { CartProvider } from "@/components/cart-provider";
 import { CartDrawer } from "@/components/cart-drawer";
 import { LiveAnnouncer } from "@/components/live-announcer";
+import { PageTransition } from "@/components/page-transition";
 import { PREVIEW_BOOT_SCRIPT, PreviewOptions } from "@/components/preview-options";
 import { RevealController } from "@/components/reveal";
 
@@ -104,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             Skip to content
           </a>
 
-          {children}
+          <PageTransition>{children}</PageTransition>
 
           <CartDrawer />
           <LiveAnnouncer />

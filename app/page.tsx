@@ -18,6 +18,12 @@ export const metadata: Metadata = {
  * The photograph is Sydney's home shot: the olive blanket over a cream chair
  * by the fire, with the city behind. Landscape, so it fills a desktop screen
  * at its natural crop; on phones the blanket stays centred.
+ *
+ * Getting in has to be obvious. The button breathes, a line under it says
+ * what to do, and the whole screen is a tap target: an invisible link covers
+ * the photograph and the non-interactive type lets taps fall through to it.
+ * That cover is hidden from assistive tech on purpose, since the button and
+ * the Enter link are already the accessible way in.
  */
 export default function OpenerPage() {
   return (
@@ -42,23 +48,36 @@ export default function OpenerPage() {
       {/* --- the plain ground (data-opener="logo") --------------------- */}
       <div className="opener-ground absolute inset-0" aria-hidden="true" />
 
+      {/* --- the whole screen is the door ------------------------------ */}
+      <Link
+        href="/shop"
+        className="absolute inset-0 z-0 cursor-pointer"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+
       {/* --- chrome: just a quiet way in, top-right -------------------- */}
-      <div className="relative flex items-start justify-end px-[var(--spacing-gutter)] pt-6 sm:pt-8">
-        <Link href="/shop" className="nav-link on-dark bg-transparent">
+      <div className="pointer-events-none relative z-10 flex items-start justify-end px-[var(--spacing-gutter)] pt-6 sm:pt-8">
+        <Link href="/shop" className="nav-link on-dark pointer-events-auto bg-transparent">
           Enter
         </Link>
       </div>
 
       {/* --- the mark + the one button -------------------------------- */}
-      <div className="relative flex min-h-[calc(100svh-6rem)] flex-col items-center justify-center px-[var(--spacing-gutter)] pb-20 text-center">
+      <div className="pointer-events-none relative z-10 flex min-h-[calc(100svh-6rem)] flex-col items-center justify-center px-[var(--spacing-gutter)] pb-20 text-center">
         <h1 className="opener-mark w-full max-w-[34rem]">
           <WordmarkStacked className="opener-wordmark mx-auto h-auto w-full" />
           <HookMark className="opener-hook mx-auto h-auto w-full" />
         </h1>
 
-        <Link href="/shop" className="btn btn-inverse mt-10 min-w-[16rem]">
+        <Link href="/shop" className="btn btn-inverse opener-cta pointer-events-auto mt-10 min-w-[16rem]">
           Shop the collection
         </Link>
+
+        <p className="opener-hint mt-5 font-serif text-lg italic tracking-[0.02em] opacity-85">
+          <span className="opener-hint-tap">Tap anywhere to come in</span>
+          <span className="opener-hint-click">Click anywhere to come in</span>
+        </p>
 
         <p className="mt-10 text-[0.75rem] uppercase tracking-[0.22em] opacity-80">
           Handmade in small batches <span aria-hidden="true">·</span> Charlotte, NC

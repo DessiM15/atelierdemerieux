@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { HookMark, WordmarkStacked } from "@/components/marks";
-import { Monogram } from "@/components/wordmark";
 
 export const metadata: Metadata = {
   title: "Handmade crochet, worked one piece at a time",
@@ -40,11 +39,8 @@ export default function OpenerPage() {
       {/* --- the plain ground (data-opener="logo") --------------------- */}
       <div className="opener-ground absolute inset-0" aria-hidden="true" />
 
-      {/* --- chrome: monogram top-left, a quiet way in top-right ------- */}
-      <div className="relative flex items-start justify-between px-[var(--spacing-gutter)] pt-6 sm:pt-8">
-        <Link href="/" aria-label="Atelier de Merieux — home" className="block">
-          <Monogram className="h-9 w-auto sm:h-11" />
-        </Link>
+      {/* --- chrome: just a quiet way in, top-right -------------------- */}
+      <div className="relative flex items-start justify-end px-[var(--spacing-gutter)] pt-6 sm:pt-8">
         <Link href="/shop" className="nav-link on-dark bg-transparent">
           Enter
         </Link>

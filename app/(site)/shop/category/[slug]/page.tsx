@@ -31,8 +31,8 @@ export default async function CategoryPage({ params }: PageProps) {
 
   return (
     <div className="shell pt-12 sm:pt-16">
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-2 text-[0.75rem] uppercase tracking-[0.16em] text-muted">
+      <nav aria-label="Breadcrumb" className="mb-8 text-center">
+        <ol className="flex flex-wrap items-center justify-center gap-2 text-[0.75rem] uppercase tracking-[0.16em] text-muted">
           <li>
             <Link href="/shop" className="underline-offset-4 hover:underline">
               Shop
@@ -56,41 +56,33 @@ export default async function CategoryPage({ params }: PageProps) {
         </p>
       </header>
 
-      <nav aria-label="Categories" className="mt-10">
-        <ul className="flex flex-wrap justify-center gap-2">
+      {/* The other two collections, one tap away, as asked. */}
+      <nav aria-label="Other collections" className="mt-10">
+        <ul className="flex flex-wrap justify-center gap-3">
+          {categories
+            .filter((entry) => entry.slug !== slug)
+            .map((entry) => (
+              <li key={entry.id}>
+                <Link href={`/shop/category/${entry.slug}`} className="btn btn-secondary">
+                  {entry.name}
+                  <svg viewBox="0 0 16 16" className="size-3" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4" />
+                  </svg>
+                </Link>
+              </li>
+            ))}
           <li>
-            <Link
-              href="/shop"
-              className="inline-block border border-camel px-4 py-2.5 text-[0.75rem] uppercase tracking-[0.18em] transition-colors hover:border-ink"
-            >
+            <Link href="/shop/all" className="btn btn-ghost">
               Everything
             </Link>
           </li>
-          {categories.map((entry) => {
-            const current = entry.slug === slug;
-            return (
-              <li key={entry.id}>
-                <Link
-                  href={`/shop/category/${entry.slug}`}
-                  {...(current ? { "aria-current": "page" as const } : {})}
-                  className={`inline-block border px-4 py-2.5 text-[0.75rem] uppercase tracking-[0.18em] transition-colors ${
-                    current
-                      ? "border-ink bg-ink text-cream"
-                      : "border-camel hover:border-ink"
-                  }`}
-                >
-                  {entry.name}
-                </Link>
-              </li>
-            );
-          })}
         </ul>
       </nav>
 
       {products.length === 0 ? (
         <p className="prose-editorial mt-16 text-muted">
           Nothing in this part of the shop right now.{" "}
-          <Link href="/shop" className="link">
+          <Link href="/shop/all" className="link">
             See everything
           </Link>
           .

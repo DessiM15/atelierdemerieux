@@ -7,8 +7,6 @@ import { CartDrawer } from "@/components/cart-drawer";
 import { LiveAnnouncer } from "@/components/live-announcer";
 import { PREVIEW_BOOT_SCRIPT, PreviewOptions } from "@/components/preview-options";
 import { RevealController } from "@/components/reveal";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 
 /* ---------------------------------------------------------------------------
    Type
@@ -102,13 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             Skip to content
           </a>
 
-          <SiteHeader />
-
-          <main id="main" tabIndex={-1}>
-            {children}
-          </main>
-
-          <SiteFooter />
+          {children}
 
           <CartDrawer />
           <LiveAnnouncer />

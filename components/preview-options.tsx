@@ -6,60 +6,122 @@ import { useEffect, useId, useState } from "react";
  * REVIEW TOOL — remove once the design decisions are made.
  *
  * A small floating panel that switches between the design options still
- * being chosen with Sydney: the navigation bar treatment and the hero tint.
- * It writes `data-nav` and `data-tint` onto <html>; everything else is CSS
- * keyed off those attributes, so the real components have no knowledge of
- * the panel and deleting it leaves the site on whatever the defaults are.
+ * being chosen with Sydney. It writes data attributes onto <html>; everything
+ * else is CSS keyed off those attributes, so the real components have no
+ * knowledge of the panel and deleting it leaves the site on the defaults.
  *
  * The choice is remembered in localStorage and applied by an inline script in
- * the root layout before first paint, so there is no flash on reload.
+ * the root layout before first paint, so there is no flash on reload. The
+ * same keys work as URL parameters (?nav=merlot&heads=plum) for sharing.
  */
 
-export const PREVIEW_STORAGE_KEY = "adm.preview.v1";
+export const PREVIEW_STORAGE_KEY = "adm.preview.v2";
 
-export type NavOption = "cream" | "plum" | "glass";
-export type TintOption = "plum" | "natural";
+export interface OptionGroup {
+  key: string;
+  label: string;
+  values: readonly string[];
+  default: string;
+  options: ReadonlyArray<{ value: string; label: string; hint: string }>;
+}
 
-export const NAV_OPTIONS: Array<{ value: NavOption; label: string; hint: string }> = [
-  { value: "cream", label: "Cream", hint: "Solid cream bar, as now" },
-  { value: "plum", label: "Plum", hint: "Solid plum bar, cream type" },
-  { value: "glass", label: "See-through", hint: "Clear over the hero, cream once you scroll" },
+export const GROUPS: readonly OptionGroup[] = [
+  {
+    key: "nav",
+    label: "Navigation bar",
+    values: ["cream", "cream-merlot", "plum", "merlot", "glass"],
+    default: "cream",
+    options: [
+      { value: "cream", label: "Cream · black type", hint: "Solid cream bar, near-black links" },
+      { value: "cream-merlot", label: "Cream · merlot type", hint: "Cream bar, merlot links and wordmark. Footer goes merlot" },
+      { value: "plum", label: "Plum", hint: "Solid plum bar, cream type" },
+      { value: "merlot", label: "Merlot", hint: "Solid merlot bar, cream type. Footer goes merlot too" },
+      { value: "glass", label: "See-through", hint: "Clear over the collection panels, cream once you scroll" },
+    ],
+  },
+  {
+    key: "heads",
+    label: "Headings",
+    values: ["ink", "plum", "merlot"],
+    default: "ink",
+    options: [
+      { value: "ink", label: "Ink", hint: "Near-black, as now" },
+      { value: "plum", label: "Plum", hint: "Titles and primary buttons in plum" },
+      { value: "merlot", label: "Merlot", hint: "Titles and primary buttons in merlot" },
+    ],
+  },
+  {
+    key: "opener",
+    label: "Opening page",
+    values: ["photo", "logo"],
+    default: "photo",
+    options: [
+      { value: "photo", label: "Photograph", hint: "Full-bleed home image behind the mark" },
+      { value: "logo", label: "Logo only", hint: "The mark alone on a plain ground" },
+    ],
+  },
+  {
+    key: "mark",
+    label: "Opening mark",
+    values: ["wordmark", "hook"],
+    default: "wordmark",
+    options: [
+      { value: "wordmark", label: "The Wordmark", hint: "Stacked tracked caps, study 01" },
+      { value: "hook", label: "The Hook", hint: "Crochet hook beside the name, study 05" },
+    ],
+  },
+  {
+    key: "tint",
+    label: "Photo tint",
+    values: ["natural", "plum"],
+    default: "natural",
+    options: [
+      { value: "natural", label: "Natural", hint: "Neutral shadow on the opener photo" },
+      { value: "plum", label: "Plum wash", hint: "Warm plum shadow on the opener photo" },
+    ],
+  },
 ];
-
-export const TINT_OPTIONS: Array<{ value: TintOption; label: string; hint: string }> = [
-  { value: "natural", label: "Natural", hint: "Neutral shadow, truer colour in the blankets" },
-  { value: "plum", label: "Plum wash", hint: "Warm plum shadow over the photographs" },
-];
-
-export const PREVIEW_DEFAULTS = { nav: "cream" as NavOption, tint: "natural" as TintOption };
 
 /** Runs before paint. Kept tiny and dependency-free on purpose. */
-export const PREVIEW_BOOT_SCRIPT = `(function(){var K=${JSON.stringify(
-  PREVIEW_STORAGE_KEY,
-)};var N=["cream","plum","glass"],T=["plum","natural"];var s={};try{s=JSON.parse(localStorage.getItem(K)||"{}")||{}}catch(e){}try{var q=new URLSearchParams(location.search);var qn=q.get("nav"),qt=q.get("tint");if(N.indexOf(qn)>-1)s.nav=qn;if(T.indexOf(qt)>-1)s.tint=qt;if(qn||qt){try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}}catch(e){}var d=document.documentElement;d.dataset.nav=N.indexOf(s.nav)>-1?s.nav:"${PREVIEW_DEFAULTS.nav}";d.dataset.tint=T.indexOf(s.tint)>-1?s.tint:"${PREVIEW_DEFAULTS.tint}";})();`;
+export const PREVIEW_BOOT_SCRIPT = `(function(){var K=${JSON.stringify(PREVIEW_STORAGE_KEY)};var G=${JSON.stringify(
+  GROUPS.map((group) => [group.key, group.values, group.default]),
+)};var s={};try{s=JSON.parse(localStorage.getItem(K)||"{}")||{}}catch(e){}var changed=false;try{var q=new URLSearchParams(location.search);G.forEach(function(g){var v=q.get(g[0]);if(v&&g[1].indexOf(v)>-1){s[g[0]]=v;changed=true}})}catch(e){}if(changed){try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}var d=document.documentElement;G.forEach(function(g){d.dataset[g[0]]=g[1].indexOf(s[g[0]])>-1?s[g[0]]:g[2]})})();`;
+
+type Choices = Record<string, string>;
+
+function defaults(): Choices {
+  return Object.fromEntries(GROUPS.map((group) => [group.key, group.default]));
+}
 
 export function PreviewOptions() {
   const [open, setOpen] = useState(false);
-  const [nav, setNav] = useState<NavOption>(PREVIEW_DEFAULTS.nav);
-  const [tint, setTint] = useState<TintOption>(PREVIEW_DEFAULTS.tint);
+  const [choices, setChoices] = useState<Choices>(defaults);
+  const [hydrated, setHydrated] = useState(false);
   const panelId = useId();
 
   // Read whatever the boot script already applied.
   useEffect(() => {
     const d = document.documentElement.dataset;
-    if (d.nav === "cream" || d.nav === "plum" || d.nav === "glass") setNav(d.nav);
-    if (d.tint === "plum" || d.tint === "natural") setTint(d.tint);
+    setChoices((current) => {
+      const next = { ...current };
+      for (const group of GROUPS) {
+        const value = d[group.key];
+        if (value && group.values.includes(value)) next[group.key] = value;
+      }
+      return next;
+    });
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.nav = nav;
-    document.documentElement.dataset.tint = tint;
+    if (!hydrated) return;
+    for (const group of GROUPS) document.documentElement.dataset[group.key] = choices[group.key] ?? group.default;
     try {
-      localStorage.setItem(PREVIEW_STORAGE_KEY, JSON.stringify({ nav, tint }));
+      localStorage.setItem(PREVIEW_STORAGE_KEY, JSON.stringify(choices));
     } catch {
       /* private mode — the choice just won't persist */
     }
-  }, [nav, tint]);
+  }, [choices, hydrated]);
 
   return (
     <div
@@ -73,14 +135,14 @@ export function PreviewOptions() {
           id={panelId}
           role="dialog"
           aria-label="Design options"
-          className="max-h-[70vh] w-full overflow-y-auto border border-rule bg-cream p-5 shadow-[0_12px_40px_-12px_rgba(31,8,16,0.35)] sm:w-[17rem]"
+          className="max-h-[70vh] w-full overflow-y-auto border border-rule bg-cream p-5 shadow-[0_12px_40px_-12px_rgba(31,8,16,0.35)] sm:w-[18rem]"
         >
           <div className="mb-4 flex items-center justify-between gap-4">
             <p className="eyebrow">Design options · for review</p>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="-mr-2 flex size-9 items-center justify-center text-[0.65rem] uppercase tracking-[0.2em]"
+              className="-mr-2 flex size-9 items-center justify-center"
               aria-label="Close design options"
             >
               <svg viewBox="0 0 12 12" className="size-3" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
@@ -89,63 +151,43 @@ export function PreviewOptions() {
             </button>
           </div>
 
-          <fieldset className="mb-5">
-            <legend className="field-label">Navigation bar</legend>
-            <div className="flex flex-col gap-1.5">
-              {NAV_OPTIONS.map((option) => (
-                <label
-                  key={option.value}
-                  className={`flex cursor-pointer items-start gap-3 border px-3 py-2.5 transition-colors ${
-                    nav === option.value ? "border-ink bg-ink text-cream" : "border-camel hover:border-boho"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="preview-nav"
-                    value={option.value}
-                    checked={nav === option.value}
-                    onChange={() => setNav(option.value)}
-                    className="sr-only"
-                  />
-                  <span className="flex flex-col">
-                    <span className="text-[0.8125rem]">{option.label}</span>
-                    <span className={`text-[0.6875rem] ${nav === option.value ? "text-cream/75" : "text-muted"}`}>
-                      {option.hint}
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend className="field-label">Hero tint</legend>
-            <div className="flex flex-col gap-1.5">
-              {TINT_OPTIONS.map((option) => (
-                <label
-                  key={option.value}
-                  className={`flex cursor-pointer items-start gap-3 border px-3 py-2.5 transition-colors ${
-                    tint === option.value ? "border-ink bg-ink text-cream" : "border-camel hover:border-boho"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="preview-tint"
-                    value={option.value}
-                    checked={tint === option.value}
-                    onChange={() => setTint(option.value)}
-                    className="sr-only"
-                  />
-                  <span className="flex flex-col">
-                    <span className="text-[0.8125rem]">{option.label}</span>
-                    <span className={`text-[0.6875rem] ${tint === option.value ? "text-cream/75" : "text-muted"}`}>
-                      {option.hint}
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <div className="flex flex-col gap-5">
+            {GROUPS.map((group) => (
+              <fieldset key={group.key}>
+                <legend className="field-label">{group.label}</legend>
+                <div className="flex flex-col gap-1.5">
+                  {group.options.map((option) => {
+                    const selected = (choices[group.key] ?? group.default) === option.value;
+                    return (
+                      <label
+                        key={option.value}
+                        className={`flex cursor-pointer items-start gap-3 border px-3 py-2.5 transition-colors ${
+                          selected ? "border-ink bg-ink text-cream" : "border-camel hover:border-boho"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={`preview-${group.key}`}
+                          value={option.value}
+                          checked={selected}
+                          onChange={() =>
+                            setChoices((current) => ({ ...current, [group.key]: option.value }))
+                          }
+                          className="sr-only"
+                        />
+                        <span className="flex flex-col">
+                          <span className="text-[0.8125rem]">{option.label}</span>
+                          <span className={`text-[0.6875rem] ${selected ? "text-cream/75" : "text-muted"}`}>
+                            {option.hint}
+                          </span>
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            ))}
+          </div>
         </div>
       ) : null}
 

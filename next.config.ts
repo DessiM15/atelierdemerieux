@@ -21,6 +21,11 @@ const nextConfig: NextConfig = {
       { source: "/commission", destination: "/custom-order", permanent: true },
       { source: "/atelier", destination: "/meet-the-maker", permanent: true },
       { source: "/api/commission", destination: "/api/custom-order", permanent: false },
+      {
+        source: "/shop/category/small-things",
+        destination: "/shop/category/the-little-things",
+        permanent: true,
+      },
     ];
   },
   async headers() {

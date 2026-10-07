@@ -63,7 +63,7 @@ export function SiteHeader() {
     // these two attributes, so the markup is identical across the options.
     <header
       className="site-header sticky top-0 z-40 border-b border-transparent backdrop-blur-[2px]"
-      data-home={pathname === "/"}
+      data-over-hero={pathname === "/shop"}
       data-scrolled={isScrolled}
     >
       <div className="shell flex items-center justify-between gap-4 py-4 sm:py-5">
@@ -129,7 +129,7 @@ export function SiteHeader() {
 
         {/* --- bag (right) --------------------------------------------- */}
         <div className="flex flex-1 items-center justify-end gap-5">
-          <Link href="/shop" className="nav-link hidden lg:inline-block">
+          <Link href="/shop/all" className="nav-link hidden lg:inline-block">
             Everything
           </Link>
           <button
@@ -164,7 +164,7 @@ export function SiteHeader() {
       >
         <nav aria-label="Main" className="shell py-4">
           <ul className="flex flex-col">
-            {[...NAV, { href: "/shop", label: "Everything" }].map((item, index) => (
+            {[...NAV, { href: "/shop/all", label: "Everything" }].map((item, index) => (
               <li key={`${item.href}-${index}`} className="border-b border-rule last:border-b-0">
                 <Link
                   href={item.href}

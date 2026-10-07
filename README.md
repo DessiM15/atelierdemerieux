@@ -68,8 +68,10 @@ All optional. An item with none of them renders as a plain ready-to-ship piece, 
 
 ```
 app/
-  page.tsx                      home — full-bleed collection hero, shop one tap away
-  shop/                         grid, category, product detail
+  page.tsx                      the opener — one screen, one button (no nav)
+  (site)/                       everything else, with header + footer
+    shop/                       three collection panels; /shop/all is the grid
+    shop/category/[slug]        a collection, with buttons to the other two
   custom-order/                 custom-order request flow (was /commission)
   meet-the-maker/               meet the maker + process (was /atelier)
   checkout/                     on-site payment + confirmation
@@ -81,7 +83,6 @@ app/
     webhooks/square/            signature-verified cache busting
 components/                     UI, one client island per interactive region
 lib/
-  collections.ts                seasonal hero collections (the Fall blankets)
   square/                       typed REST wrappers (client, catalog,
                                 inventory, orders, customers)
   seed.ts                       stand-in catalogue used when Square is absent

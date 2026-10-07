@@ -4,12 +4,12 @@ import { availabilityOf, getCategories, getProducts } from "@/lib/square/catalog
 import { ProductCard } from "@/components/product-card";
 
 export const metadata: Metadata = {
-  title: "Shop",
+  title: "Everything",
   description:
     "Every piece currently in the atelier — blankets, throws, and small goods for the home, worked by hand in plum, taupe and cream.",
 };
 
-export default async function ShopPage() {
+export default async function EverythingPage() {
   const [products, categories] = await Promise.all([getProducts(), getCategories()]);
 
   // Available pieces lead. Sold-out ones stay on the page — they still sell the
@@ -23,6 +23,22 @@ export default async function ShopPage() {
 
   return (
     <div className="shell pt-12 sm:pt-16">
+      <nav aria-label="Breadcrumb" className="mb-8 text-center">
+        <ol className="flex flex-wrap items-center justify-center gap-2 text-[0.75rem] uppercase tracking-[0.16em] text-muted">
+          <li>
+            <Link href="/shop" className="underline-offset-4 hover:underline">
+              Shop
+            </Link>
+          </li>
+          <li aria-hidden="true">·</li>
+          <li>
+            <span aria-current="page" className="text-ink">
+              Everything
+            </span>
+          </li>
+        </ol>
+      </nav>
+
       <header className="mx-auto max-w-2xl text-center">
         <p className="eyebrow mb-4">The shop</p>
         <h1 className="display-xl">Everything in the atelier</h1>
@@ -32,8 +48,8 @@ export default async function ShopPage() {
           says which it is, before you pay rather than after.
         </p>
         <p className="mx-auto mt-5 max-w-[52ch] text-[0.9375rem] leading-relaxed text-muted">
-          Everything is worked by one pair of hands in a machine-washable chenille or cotton.
-          If the colour you want isn&apos;t here, it can be —{" "}
+          Everything is worked by one pair of hands in a machine-washable chenille or cotton. If
+          the colour you want isn&apos;t here, it can be —{" "}
           <Link href="/custom-order" className="link">
             ask for it
           </Link>
@@ -42,7 +58,7 @@ export default async function ShopPage() {
       </header>
 
       {categories.length > 0 ? (
-        <nav aria-label="Categories" className="mt-10">
+        <nav aria-label="Collections" className="mt-10">
           <ul className="flex flex-wrap justify-center gap-2">
             <li>
               <span

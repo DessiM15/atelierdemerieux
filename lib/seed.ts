@@ -37,8 +37,8 @@ export const seedCategories: Category[] = [
   },
   {
     id: "cat-small",
-    slug: "small-things",
-    name: "Small Things",
+    slug: "the-little-things",
+    name: "The Little Things",
     blurb: "For the car, the hair, the gift that needed to be something.",
   },
 ];

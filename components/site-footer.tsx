@@ -9,10 +9,11 @@ const COLUMNS = [
   {
     heading: "Shop",
     links: [
-      { href: "/shop", label: "Everything" },
+      { href: "/shop", label: "The collections" },
+      { href: "/shop/all", label: "Everything" },
       { href: "/shop/category/blankets-and-throws", label: "Blankets & Throws" },
       { href: "/shop/category/for-the-home", label: "For the Home" },
-      { href: "/shop/category/small-things", label: "Small Things" },
+      { href: "/shop/category/the-little-things", label: "The Little Things" },
       { href: "/custom-order", label: "Start a custom order" },
     ],
   },
@@ -40,7 +41,7 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="on-dark mt-24 sm:mt-32">
+    <footer className="site-footer on-dark mt-24 sm:mt-32">
       <div className="shell py-16 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
           {/* --- identity + newsletter ------------------------------- */}

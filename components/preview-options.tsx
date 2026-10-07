@@ -34,9 +34,9 @@ export const TINT_OPTIONS: Array<{ value: TintOption; label: string; hint: strin
 export const PREVIEW_DEFAULTS = { nav: "cream" as NavOption, tint: "natural" as TintOption };
 
 /** Runs before paint. Kept tiny and dependency-free on purpose. */
-export const PREVIEW_BOOT_SCRIPT = `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(
+export const PREVIEW_BOOT_SCRIPT = `(function(){var K=${JSON.stringify(
   PREVIEW_STORAGE_KEY,
-)})||"{}");var d=document.documentElement;d.dataset.nav=["cream","plum","glass"].indexOf(s.nav)>-1?s.nav:"${PREVIEW_DEFAULTS.nav}";d.dataset.tint=["plum","natural"].indexOf(s.tint)>-1?s.tint:"${PREVIEW_DEFAULTS.tint}";}catch(e){}})();`;
+)};var N=["cream","plum","glass"],T=["plum","natural"];var s={};try{s=JSON.parse(localStorage.getItem(K)||"{}")||{}}catch(e){}try{var q=new URLSearchParams(location.search);var qn=q.get("nav"),qt=q.get("tint");if(N.indexOf(qn)>-1)s.nav=qn;if(T.indexOf(qt)>-1)s.tint=qt;if(qn||qt){try{localStorage.setItem(K,JSON.stringify(s))}catch(e){}}}catch(e){}var d=document.documentElement;d.dataset.nav=N.indexOf(s.nav)>-1?s.nav:"${PREVIEW_DEFAULTS.nav}";d.dataset.tint=T.indexOf(s.tint)>-1?s.tint:"${PREVIEW_DEFAULTS.tint}";})();`;
 
 export function PreviewOptions() {
   const [open, setOpen] = useState(false);
@@ -62,13 +62,32 @@ export function PreviewOptions() {
   }, [nav, tint]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2 text-ink">
+    <div
+      className="fixed inset-x-3 z-[60] flex flex-col items-end gap-2 text-ink sm:inset-x-auto sm:right-4"
+      // Kept clear of the strip along the bottom of iPhone Safari that
+      // opens the toolbar instead of registering a tap.
+      style={{ bottom: "max(1.75rem, calc(env(safe-area-inset-bottom) + 1.25rem))" }}
+    >
       {open ? (
         <div
           id={panelId}
-          className="w-[17rem] border border-rule bg-cream p-5 shadow-[0_12px_40px_-12px_rgba(31,8,16,0.35)]"
+          role="dialog"
+          aria-label="Design options"
+          className="max-h-[70vh] w-full overflow-y-auto border border-rule bg-cream p-5 shadow-[0_12px_40px_-12px_rgba(31,8,16,0.35)] sm:w-[17rem]"
         >
-          <p className="eyebrow mb-4">Design options · for review</p>
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <p className="eyebrow">Design options · for review</p>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="-mr-2 flex size-9 items-center justify-center text-[0.65rem] uppercase tracking-[0.2em]"
+              aria-label="Close design options"
+            >
+              <svg viewBox="0 0 12 12" className="size-3" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
+                <path d="M1 1l10 10M11 1L1 11" />
+              </svg>
+            </button>
+          </div>
 
           <fieldset className="mb-5">
             <legend className="field-label">Navigation bar</legend>
@@ -135,7 +154,7 @@ export function PreviewOptions() {
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex min-h-11 items-center gap-2 border border-ink bg-cream px-4 text-[0.6875rem] uppercase tracking-[0.2em] shadow-[0_8px_24px_-10px_rgba(31,8,16,0.4)] hover:bg-ink hover:text-cream"
+        className="flex min-h-12 touch-manipulation items-center gap-2 border border-ink bg-cream px-5 text-[0.6875rem] uppercase tracking-[0.2em] shadow-[0_8px_24px_-10px_rgba(31,8,16,0.4)] hover:bg-ink hover:text-cream"
       >
         <span className="size-2 rounded-full bg-rubine" aria-hidden="true" />
         {open ? "Close options" : "Design options"}

@@ -15,8 +15,9 @@ export const metadata: Metadata = {
  * for both is rendered and CSS shows the chosen pair, so the switch is
  * instant and nothing flashes.
  *
- * PLACEHOLDER: the photograph is a shop image standing in until Sydney's
- * home shot arrives. Drop it in `public/opener/home.jpg` and change the src.
+ * The photograph is Sydney's home shot: the olive blanket over a cream chair
+ * by the fire, with the city behind. Landscape, so it fills a desktop screen
+ * at its natural crop; on phones the blanket stays centred.
  */
 export default function OpenerPage() {
   return (
@@ -24,16 +25,18 @@ export default function OpenerPage() {
       {/* --- the photograph (data-opener="photo") ---------------------- */}
       <div className="opener-photo absolute inset-0" aria-hidden="true">
         <Image
-          src="/products/autumn-blanket-2.jpg"
+          src="/opener/home.jpg"
           alt=""
           fill
           priority
           sizes="100vw"
-          quality={82}
-          className="object-cover object-[50%_45%]"
+          quality={84}
+          className="object-cover object-[58%_50%]"
         />
-        <div className="hero-tint-bottom absolute inset-0" />
-        <div className="absolute inset-0 bg-roast/25" />
+        {/* The photograph is already dark and warm, so the wash is light:
+            just enough to settle the type over the fire and the skyline. */}
+        <div className="hero-tint-bottom absolute inset-0 opacity-70" />
+        <div className="absolute inset-0 bg-roast/15" />
       </div>
 
       {/* --- the plain ground (data-opener="logo") --------------------- */}

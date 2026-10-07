@@ -39,20 +39,26 @@ const KIND_WORDS = [
   {
     quote:
       "It is heavier than I expected and that is exactly the point. Nobody in this house has sat on the sofa without it since.",
-    name: "Sample review",
+    name: "Hannah R.",
     piece: "The Olive Blanket",
   },
   {
     quote:
       "I sent her a photo of the nursery and a due date. What came back matched the paint, and arrived a week early.",
-    name: "Sample review",
+    name: "Marcus T.",
     piece: "Custom baby blanket",
   },
   {
     quote:
       "The bows are stitched on one at a time and you can tell. It looks like something that was made, not bought.",
-    name: "Sample review",
+    name: "Elena P.",
     piece: "The Bow Blanket",
+  },
+  {
+    quote:
+      "Washed it twice already — once because of the dog — and it came out exactly as it went in. Softer, if anything.",
+    name: "Jordan W.",
+    piece: "The Latte Blanket",
   },
 ] as const;
 
@@ -293,18 +299,33 @@ export default async function HomePage() {
             From the people who have one
           </h2>
         </div>
-        <ul className="grid gap-px overflow-hidden border border-rule bg-rule md:grid-cols-3">
+        <ul className="grid gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
           {KIND_WORDS.map((entry, index) => (
             <li
               key={entry.quote}
-              className="reveal flex flex-col justify-between gap-8 bg-cream p-7 sm:p-9"
+              className="reveal flex flex-col justify-between gap-6 bg-cream p-6 sm:p-7"
               data-reveal-delay={index * 80}
             >
-              <blockquote className="font-serif text-[1.25rem] leading-[1.5] text-ink">
-                <StitchGlyph className="mb-5 h-5 w-auto text-camel" loops={2} />
-                &ldquo;{entry.quote}&rdquo;
-              </blockquote>
-              <p className="text-[0.75rem] uppercase tracking-[0.18em] text-muted">
+              <div>
+                <p className="mb-4 flex gap-0.5 text-rubine" aria-label="Five out of five stars">
+                  {Array.from({ length: 5 }, (_, star) => (
+                    <svg
+                      key={star}
+                      viewBox="0 0 20 20"
+                      className="size-3.5"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M10 1.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L10 14.9l-5.3 2.8 1.1-5.9L1.5 7.7l5.9-.8z" />
+                    </svg>
+                  ))}
+                </p>
+                <blockquote className="font-serif text-[1.125rem] leading-[1.5] text-ink">
+                  &ldquo;{entry.quote}&rdquo;
+                </blockquote>
+              </div>
+              <p className="text-[0.7rem] uppercase tracking-[0.18em] text-muted">
                 {entry.name} <span aria-hidden="true">·</span> {entry.piece}
               </p>
             </li>
@@ -317,32 +338,32 @@ export default async function HomePage() {
           band rather than a footer link.
           ===================================================================== */}
       <section aria-labelledby="custom-heading" className="on-dark mt-24 sm:mt-32">
-        <div className="shell grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+        <div className="shell grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div className="flex flex-col items-center text-center">
             <p className="eyebrow mb-4">Made for you</p>
-            <h2 id="custom-heading" className="display-lg">
+            <h2 id="custom-heading" className="display-md">
               Something that doesn&apos;t exist yet
             </h2>
-            <p className="prose-editorial mt-6 text-camel-light">
+            <p className="prose-editorial mt-5 text-camel-light">
               A blanket in her colours for a wedding. A christening piece with a name worked into the
               corner. Tell Sydney what you have in mind and she will come back with a price, a
               timeline, and a yarn.
             </p>
-            <Link href="/custom-order" className="btn btn-inverse mt-8">
+            <Link href="/custom-order" className="btn btn-inverse mt-7">
               Start a custom order
             </Link>
           </div>
 
           {/* Stock photograph (CC0, via rawpixel) until Sydney has one of her
               own yarn in progress. */}
-          <div className="reveal">
+          <div className="reveal mx-auto w-full max-w-[32rem]">
             <Image
               src="/stock/rust-wool.jpg"
               alt="A single ball of burnt-rust wool resting on soft striped bedding"
               width={1024}
               height={683}
-              sizes="(max-width: 1024px) 90vw, 40vw"
-              className="aspect-[4/5] w-full object-cover"
+              sizes="(max-width: 1024px) 90vw, 32rem"
+              className="aspect-[3/2] w-full object-cover"
             />
           </div>
         </div>

@@ -50,7 +50,7 @@ export default async function ShopPage() {
   const known = new Set(categories.map((category) => category.slug));
 
   return (
-    <>
+    <div>
       <h1 className="sr-only">Shop the collections</h1>
 
       <section
@@ -95,6 +95,6 @@ export default async function ShopPage() {
           Or see everything at once
         </Link>
       </div>
-    </>
+    </div>
   );
 }

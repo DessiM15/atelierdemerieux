@@ -88,6 +88,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={`${playfair.variable} ${cormorant.variable} ${jost.variable}`}
+      // Tells Next.js the page scrolls smoothly, so it can switch that off for
+      // the instant it repositions the page after a navigation. Without it
+      // the repositioning animates and can land in the wrong place.
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <body>

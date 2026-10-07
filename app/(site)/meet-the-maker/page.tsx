@@ -107,7 +107,7 @@ const IN_THE_STUDIO = [
 
 export default function MeetTheMakerPage() {
   return (
-    <>
+    <div>
       {/* =====================================================================
           Portrait + introduction
           ===================================================================== */}
@@ -292,6 +292,6 @@ export default function MeetTheMakerPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

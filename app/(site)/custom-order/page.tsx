@@ -49,7 +49,7 @@ const RECENT = [
 
 export default function CustomOrderPage() {
   return (
-    <>
+    <div>
       <section className="shell grid gap-10 pt-12 sm:pt-16 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div>
           <StitchGlyph className="mb-6 h-6 w-auto text-rubine" loops={4} />
@@ -169,6 +169,6 @@ export default function CustomOrderPage() {
         </p>
         <CustomOrderForm />
       </section>
-    </>
+    </div>
   );
 }

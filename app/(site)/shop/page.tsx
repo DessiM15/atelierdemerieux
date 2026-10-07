@@ -13,33 +13,41 @@ export const metadata: Metadata = {
  * The shop entrance: three full-bleed panels, one per collection. The full
  * grid lives at /shop/all for people who want everything at once.
  *
- * The photograph for each panel is keyed by category slug so the live Square
- * catalogue can rename a category without losing its picture.
+ * The panels are fixed, not read from the catalogue: this page has to look
+ * finished even while Sydney's Square account is still empty. Each panel
+ * links to its collection when that category exists in the catalogue, and
+ * to the full grid until it does.
  */
-const PANELS: Record<string, { src: string; alt: string; focus: string; line: string }> = {
-  "blankets-and-throws": {
+const PANELS = [
+  {
+    slug: "blankets-and-throws",
+    name: "Blankets & Throws",
+    line: "Weeks of work in a single piece. Made to be used, not saved for guests.",
     src: "/products/autumn-blanket.jpg",
     alt: "A chunky crochet blanket in bands of olive, cream and rust draped over a cream sofa",
     focus: "50% 60%",
-    line: "Weeks of work in a single piece.",
   },
-  "for-the-home": {
+  {
+    slug: "for-the-home",
+    name: "For the Home",
+    line: "Small things that make a room feel finished.",
     src: "/products/rose-coasters.jpg",
     alt: "Cream crochet coasters edged with small red roses on a marble table",
     focus: "50% 55%",
-    line: "Small things that finish a room.",
   },
-  "the-little-things": {
+  {
+    slug: "the-little-things",
+    name: "The Little Things",
+    line: "For the car, the hair, the gift that needed to be something.",
     src: "/products/tulip-mirror-hanger.jpg",
     alt: "A crochet hanger of pale pink tulips swinging from a car's rear-view mirror",
     focus: "50% 45%",
-    line: "For the car, the hair, the gift.",
   },
-};
+] as const;
 
 export default async function ShopPage() {
   const categories = await getCategories();
-  const shown = categories.filter((category) => PANELS[category.slug]).slice(0, 3);
+  const known = new Set(categories.map((category) => category.slug));
 
   return (
     <>
@@ -49,12 +57,11 @@ export default async function ShopPage() {
         aria-label="Collections"
         className="panels grid min-h-[calc(100svh-5.25rem)] grid-rows-3 lg:grid-cols-3 lg:grid-rows-1"
       >
-        {shown.map((category, index) => {
-          const panel = PANELS[category.slug]!;
+        {PANELS.map((panel, index) => {
           return (
             <Link
-              key={category.id}
-              href={`/shop/category/${category.slug}`}
+              key={panel.slug}
+              href={known.has(panel.slug) ? `/shop/category/${panel.slug}` : "/shop/all"}
               className="panel group relative isolate flex min-h-[18rem] items-end overflow-hidden text-cream lg:items-center lg:justify-center"
             >
               <Image
@@ -74,10 +81,8 @@ export default async function ShopPage() {
                 <p className="eyebrow !text-camel-light">
                   Collection {String(index + 1).padStart(2, "0")}
                 </p>
-                <h2 className="display-lg text-cream">{category.name}</h2>
-                <p className="prose-editorial max-w-[26ch] text-cream/85">
-                  {category.blurb ?? panel.line}
-                </p>
+                <h2 className="display-lg text-cream">{panel.name}</h2>
+                <p className="prose-editorial max-w-[26ch] text-cream/85">{panel.line}</p>
                 <span className="btn btn-inverse mt-2">Shop the collection</span>
               </div>
             </Link>

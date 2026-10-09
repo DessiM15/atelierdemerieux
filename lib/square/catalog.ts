@@ -261,7 +261,7 @@ export async function getProducts(): Promise<Product[]> {
     // this, but an unbounded loop here would be a latent outage.
     for (let page = 0; page < 20; page++) {
       const response = await squareFetch<SearchCatalogResponse>(
-        "/v2/catalog/search-catalog-objects",
+        "/v2/catalog/search",
         {
           method: "POST",
           body: {
@@ -342,7 +342,7 @@ export async function getCategories(): Promise<Category[]> {
 
   try {
     const response = await squareFetch<SearchCatalogResponse>(
-      "/v2/catalog/search-catalog-objects",
+      "/v2/catalog/search",
       {
         method: "POST",
         body: {
